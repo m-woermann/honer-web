@@ -1,0 +1,13 @@
+change stacking system ... current stacking useses own modell hight needs to use hight of waht its stacked on
+
+change speaker and sub metadata the speaker is a passibe 8inch 1 inch from 90 hz at 500w rms and the sun is a deul 12 at 2k rms 
+
+popup to reflect infomation in metadata of gltf
+
+anamate in and out movement
+
+add kicks 
+
+add touch pad and arrow keys controll for movement
+
+ 

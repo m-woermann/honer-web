@@ -1,0 +1,111 @@
+{
+  "speakers": [
+    {
+      "modelPath": "/speaker.glb",
+      "speakerType": "Top",
+      "name": "8\" + 1\" Passive Monitor",
+      "description": "Passive 8-inch studio monitor with 1-inch tweeter",
+      "specs": {
+        "Power": "500W RMS",
+        "Frequency Response": "90Hz - 20kHz",
+        "Drivers": "8\" Woofer + 1\" Tweeter",
+        "Connections": "Speakon",
+        "Crossover": "4 Pole Active Crossover"
+      },
+      "instances": [
+        {
+          "x": -1295,
+          "y": 1210,
+          "z": 0,
+          "onGround": false,
+          "comment": "Speaker on top of leftmost sub"
+        },
+        {
+          "x": 1295,
+          "y": 1210,
+          "z": 0,
+          "onGround": false,
+          "comment": "Speaker on top of rightmost sub"
+        }
+      ]
+    },
+    {
+      "modelPath": "/sub.glb",
+      "speakerType": "Subwoofer",
+      "name": "Dual 12\" Passive Subwoofer",
+      "description": "Dual 12-inch passive subwoofer",
+      "specs": {
+        "Power": "2000W RMS",
+        "Frequency Response": "20Hz - 150Hz",
+        "Drivers": "Dual 12\" Woofers",
+        "Connections": "Speakon"
+      },
+      "instances": [
+        {
+          "x": -1295,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Leftmost subwoofer"
+        },
+        {
+          "x": -925,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Second from left"
+        },
+        {
+          "x": -555,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Third from left"
+        },
+        {
+          "x": -185,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Fourth from left"
+        },
+        {
+          "x": 185,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Fifth from left (center-right)"
+        },
+        {
+          "x": 555,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Sixth from left"
+        },
+        {
+          "x": 925,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Seventh from left"
+        },
+        {
+          "x": 1295,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Rightmost subwoofer"
+        }
+      ]
+    }
+  ]
+}
