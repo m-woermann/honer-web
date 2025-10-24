@@ -1,0 +1,267 @@
+{
+  "speakers": [
+    {
+      "modelPath": "/speaker.glb",
+      "speakerType": "Top",
+      "name": "8\" + 1\" Passive Monitor",
+      "description": "Passive 8-inch studio monitor with 1-inch tweeter",
+      "specs": {
+        "Power": "500W RMS",
+        "Frequency Response": "90Hz - 20kHz",
+        "Drivers": "8\" Woofer + 1\" Tweeter",
+        "Connections": "Speakon",
+        "Crossover": "4 Pole Active Crossover"
+      },
+      "instances": [
+        {
+          "x": -4295,
+          "y": 1210,
+          "z": 0,
+          "onGround": false,
+          "comment": "Stack 1 - Left top"
+        },
+        {
+          "x": -2705,
+          "y": 1210,
+          "z": 0,
+          "onGround": false,
+          "comment": "Stack 1 - Right top"
+        },
+        {
+          "x": -1295,
+          "y": 1210,
+          "z": 0,
+          "onGround": false,
+          "comment": "Stack 2 - Left top"
+        },
+        {
+          "x": 295,
+          "y": 1210,
+          "z": 0,
+          "onGround": false,
+          "comment": "Stack 2 - Right top"
+        },
+        {
+          "x": 1705,
+          "y": 1210,
+          "z": 0,
+          "onGround": false,
+          "comment": "Stack 3 - Left top"
+        },
+        {
+          "x": 3295,
+          "y": 1210,
+          "z": 0,
+          "onGround": false,
+          "comment": "Stack 3 - Right top"
+        }
+      ]
+    },
+    {
+      "modelPath": "/sub.glb",
+      "speakerType": "Subwoofer",
+      "name": "Dual 12\" Passive Subwoofer",
+      "description": "Dual 12-inch passive subwoofer",
+      "specs": {
+        "Power": "2000W RMS",
+        "Frequency Response": "20Hz - 150Hz",
+        "Drivers": "Dual 12\" Woofers",
+        "Connections": "Speakon"
+      },
+      "instances": [
+        {
+          "x": -4295,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 1 - Sub 1"
+        },
+        {
+          "x": -3925,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 1 - Sub 2"
+        },
+        {
+          "x": -3555,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 1 - Sub 3"
+        },
+        {
+          "x": -3185,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 1 - Sub 4"
+        },
+        {
+          "x": -2815,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 1 - Sub 5"
+        },
+        {
+          "x": -2445,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 1 - Sub 6"
+        },
+        {
+          "x": -3075,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 1 - Sub 7"
+        },
+        {
+          "x": -2705,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 1 - Sub 8"
+        },
+        {
+          "x": -1295,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 2 - Sub 1"
+        },
+        {
+          "x": -925,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 2 - Sub 2"
+        },
+        {
+          "x": -555,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 2 - Sub 3"
+        },
+        {
+          "x": -185,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 2 - Sub 4"
+        },
+        {
+          "x": 185,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 2 - Sub 5"
+        },
+        {
+          "x": 555,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 2 - Sub 6"
+        },
+        {
+          "x": -75,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 2 - Sub 7"
+        },
+        {
+          "x": 295,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 2 - Sub 8"
+        },
+        {
+          "x": 1705,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 3 - Sub 1"
+        },
+        {
+          "x": 2075,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 3 - Sub 2"
+        },
+        {
+          "x": 2445,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 3 - Sub 3"
+        },
+        {
+          "x": 2815,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 3 - Sub 4"
+        },
+        {
+          "x": 3185,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 3 - Sub 5"
+        },
+        {
+          "x": 3555,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 3 - Sub 6"
+        },
+        {
+          "x": 2925,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 3 - Sub 7"
+        },
+        {
+          "x": 3295,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 3 - Sub 8"
+        }
+      ]
+    }
+  ]
+}

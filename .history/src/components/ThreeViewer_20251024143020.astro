@@ -1,0 +1,1084 @@
+---
+// ThreeViewer.astro - A Three.js viewer component for Astro
+---
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Michroma&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+<div class="viewer-container">
+  <canvas class="webgl"></canvas>
+  
+  <!-- Loading screen -->
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loading-content">
+      <h2>Loading 3D Models...</h2>
+      <div class="loading-bar">
+        <div class="loading-progress" id="loadingProgress"></div>
+      </div>
+      <p id="loadingText">Initializing...</p>
+    </div>
+  </div>
+  
+  <!-- Main heading -->
+  <div class="main-heading">
+    <h1>Horner Audio</h1>
+  </div>
+  
+  <div class="overlay" id="speakerOverlay">
+    <div class="overlay-content">
+      <h2>Loading...</h2>
+      <p>Please wait...</p>
+      <div class="specs">
+        <!-- Dynamic content will be populated here -->
+      </div>
+      <button class="detail-button" id="detailButton">View Details</button>
+    </div>
+  </div>
+
+  <!-- Bottom scrolling banner -->
+  <div class="bottom-banner">
+    <div class="banner-content">
+      <span class="banner-text">
+        <span class="banner-link">CONTACT</span> • 
+        <span class="banner-link">ABOUT</span> • 
+        <span class="banner-link">IMPRESSUM</span> • 
+        <span class="banner-link">PRIVACY</span> • 
+        <span class="banner-link">TERMS</span> • 
+        <span class="banner-link">SUPPORT</span> • 
+        <span class="banner-link">CONTACT</span> • 
+        <span class="banner-link">ABOUT</span> • 
+        <span class="banner-link">IMPRESSUM</span> • 
+        <span class="banner-link">PRIVACY</span> • 
+        <span class="banner-link">TERMS</span> • 
+        <span class="banner-link">SUPPORT</span> • 
+        <span class="banner-link">CONTACT</span> • 
+        <span class="banner-link">ABOUT</span> • 
+        <span class="banner-link">IMPRESSUM</span> • 
+        <span class="banner-link">PRIVACY</span> • 
+        <span class="banner-link">TERMS</span> • 
+        <span class="banner-link">SUPPORT</span> • 
+        <span class="banner-link">CONTACT</span> • 
+        <span class="banner-link">ABOUT</span> • 
+        <span class="banner-link">IMPRESSUM</span> • 
+        <span class="banner-link">PRIVACY</span> • 
+        <span class="banner-link">TERMS</span> • 
+        <span class="banner-link">SUPPORT</span> • 
+      </span>
+    </div>
+  </div>
+</div>
+
+<style>
+  .viewer-container {
+    width: 100%;
+    height: 100vh;
+    margin: 0;
+    padding: 0;
+    position: relative;
+  }
+  .webgl {
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Main heading */
+  .main-heading {
+    position: fixed;
+    top: 40px;
+    left: 40px;
+    z-index: 1000;
+    pointer-events: none;
+  }
+
+  .main-heading h1 {
+    font-family: 'Michroma', sans-serif;
+    font-size: 3rem;
+    font-weight: 400;
+    color: #42cc5d;
+    margin: 0;
+    text-shadow: 0 0 20px rgba(66, 204, 93, 0.3);
+    letter-spacing: 3px;
+  }
+
+  .overlay {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    width: 280px;
+    background: transparent;
+    border-radius: 10px;
+    display: none;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform: translateX(20px);
+  }
+  .overlay.visible {
+    display: block;
+    opacity: 1;
+    transform: translateX(0);
+  }
+  .overlay-content {
+    padding: 1.5rem;
+    color: white;
+    position: relative;
+    font-family: 'Roboto', sans-serif;
+  }
+  .overlay-content p {
+    font-family: 'Roboto', sans-serif;
+    margin: 0.5rem 0;
+  }
+  .specs {
+    margin-top: 1rem;
+  }
+  .spec-item {
+    margin: 0.5rem 0;
+    padding: 0.4rem 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 0;
+    font-size: 0.9rem;
+    font-family: 'Roboto', sans-serif !important;
+  }
+  .spec-item .spec-label,
+  .spec-item .spec-value {
+    font-family: 'Roboto', sans-serif;
+  }
+  h3 {
+    color: white;
+    margin: 0 0 1rem 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    font-family: 'Michroma', sans-serif;
+  }
+  h2 {
+    color: white;
+    margin: 0 0 1rem 0;
+    font-size: 1.3rem;
+    font-weight: 600;
+    font-family: 'Michroma', sans-serif;
+  }
+  .detail-button {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    margin-top: 1rem;
+    width: 100%;
+    transition: all 0.3s ease;
+  }
+  .detail-button:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+  }
+
+  /* Bottom scrolling banner */
+  .bottom-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: transparent;
+    z-index: 999;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+  }
+
+  .banner-content {
+    position: absolute;
+    white-space: nowrap;
+    height: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  .banner-text {
+    font-family: 'Michroma', sans-serif;
+    font-size: 14px;
+    font-weight: 400;
+    color: #42cc5d;
+    letter-spacing: 2px;
+    display: inline-block;
+    --camera-offset: 0px;
+    transform: translateX(var(--camera-offset));
+    animation: scroll-banner 60s linear infinite;
+  }
+
+  .banner-link {
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .banner-link:hover {
+    color: #42cc5d;
+    text-shadow: 0 0 8px rgba(66, 204, 93, 0.5);
+  }
+
+  /* Responsive design for mobile/narrow screens */
+  @media (max-width: 768px) {
+    .overlay {
+      top: 120px; /* Move below the heading */
+      left: 20px;
+      right: 20px;
+      width: auto; /* Use full width minus margins */
+      transform: translateY(-20px); /* Change to vertical slide */
+    }
+    
+    .overlay.visible {
+      transform: translateY(0);
+    }
+    
+    .main-heading h1 {
+      font-size: 2.5rem; /* Bigger heading on mobile */
+      letter-spacing: 1px;
+    }
+    
+    .main-heading {
+      top: 20px; /* Reduce top margin */
+      left: 20px;
+    }
+  }
+
+  @keyframes scroll-banner {
+    0% {
+      transform: translateX(var(--camera-offset));
+    }
+    100% {
+      transform: translateX(calc(-50% + var(--camera-offset)));
+    }
+  }
+
+  /* Adjust main container to account for banner */
+  .viewer-container {
+    height: calc(100vh - 60px);
+  }
+</style>
+
+<script>
+//=============================================================================
+// Type Declarations and Imports
+//=============================================================================
+interface Intersection {
+    distance: number;
+    point: THREE.Vector3;
+    face: THREE.Face | null;
+    faceIndex: number | null;
+    instanceId?: number;
+    object: THREE.Object3D;
+}
+
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+
+//=============================================================================
+// Scene Setup
+//=============================================================================
+// Canvas
+const canvas = document.querySelector('canvas.webgl');
+if (!canvas) throw new Error('Canvas not found');
+
+// Scene
+const scene = new THREE.Scene();
+scene.background = new THREE.Color(0x606060);
+
+// Sizes
+const sizes = {
+    width: window.innerWidth,
+    height: window.innerHeight
+};
+
+// Camera configuration
+const cameraY = 1200; // Camera height 
+const cameraPitchDeg = -10; // camera pitch angle in degrees
+const camera = new THREE.PerspectiveCamera(55, sizes.width / sizes.height, 0.1, 5000);
+camera.position.set(0, cameraY, 2500);
+camera.lookAt(0, 5000, 0);
+scene.add(camera);
+
+// Create camera target for consistent orientation
+const cameraTarget = new THREE.Vector3();
+const cameraPitchRad = THREE.MathUtils.degToRad(cameraPitchDeg);
+
+// Renderer
+const renderer = new THREE.WebGLRenderer({
+    canvas: canvas as HTMLCanvasElement,
+    antialias: true,
+});
+renderer.setSize(sizes.width, sizes.height);
+renderer.shadowMap.enabled = true;
+(renderer as any).physicallyCorrectLights = true;
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+scene.background = new THREE.Color(0x606060);
+
+// Lights
+const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+scene.add(ambientLight);
+
+const spotLight = new THREE.SpotLight(0xffffff, 3);
+spotLight.castShadow = true;
+spotLight.angle = Math.PI / 3;
+spotLight.penumbra = 0.2;
+spotLight.decay = 0.1;
+spotLight.distance = 5000;
+spotLight.position.set(camera.position.x + 50, camera.position.y + 50, camera.position.z);
+spotLight.target.position.set(0, 0, 0);
+scene.add(spotLight);
+scene.add(spotLight.target);
+
+// Configure shadow properties
+spotLight.shadow.mapSize.width = 2048;
+spotLight.shadow.mapSize.height = 2048;
+spotLight.shadow.camera.near = 1;
+spotLight.shadow.camera.far = 2000;
+
+// Ground plane
+const groundGeometry = new THREE.PlaneGeometry(30000, 80000);
+const groundMaterial = new THREE.MeshStandardMaterial({ 
+    color: 0xE9E9E9, // slightly darker light gray (5% darker)
+    roughness: 0.8,
+    metalness: 0.1 
+});
+const groundPlane = new THREE.Mesh(groundGeometry, groundMaterial);
+groundPlane.rotation.x = -Math.PI / 2; // Rotate to be horizontal
+groundPlane.position.y = 0; // At ground level
+groundPlane.receiveShadow = true;
+scene.add(groundPlane);
+
+
+
+//=============================================================================
+// State Management
+//=============================================================================
+// Interaction state
+const mousePanSpeed = 200.0; // world units per pixel for mouse (2x faster than touch)
+const touchPanSpeed = 100.0; // world units per pixel for touch (current speed)
+const panDamping = 6.0; // damping rate per second
+const dragThreshold = 4; // pixels
+const selectionOffset = 50; // distance objects move forward/back when selected
+const clock = new THREE.Clock();
+
+// State variables
+let isPanning = false;
+let lastPanX = 0;
+let isDragging = false;
+let totalDragMovement = 0;
+let panVelocity = 0;
+
+// Selection state
+const raycaster = new THREE.Raycaster();
+const pointer = new THREE.Vector2();
+const instancedMeshes: THREE.InstancedMesh[] = [];
+const clickableObjects: THREE.Object3D[] = []; // For direct model interaction
+let selectedMesh: THREE.InstancedMesh | null = null;
+let selectedInstance = -1;
+let selectedObject: THREE.Object3D | null = null;
+let selectedOutline: THREE.Object3D | null = null; // Track the purple outline
+
+//=============================================================================
+// Outline Management
+//=============================================================================
+function createOutline(targetObject: THREE.Object3D): THREE.Object3D | null {
+    const outlineGroup = new THREE.Group();
+    
+    // Function to process a single object or group
+    function processObject(obj: THREE.Object3D, parentGroup: THREE.Group) {
+        obj.traverse((child: THREE.Object3D) => {
+            if ((child as THREE.Mesh).isMesh && (child as THREE.Mesh).geometry) {
+                const mesh = child as THREE.Mesh;
+                
+                // Create outline material
+                const outlineMaterial = new THREE.MeshBasicMaterial({
+                    color: 0x42cc5d, // Green color
+                    side: THREE.BackSide,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                
+                // Create outline mesh with slightly larger scale
+                const outlineMesh = new THREE.Mesh(mesh.geometry, outlineMaterial);
+                
+                // Copy world matrix to get exact position
+                const worldMatrix = new THREE.Matrix4();
+                mesh.updateMatrixWorld(true);
+                worldMatrix.copy(mesh.matrixWorld);
+                
+                // Apply the world matrix to the outline mesh
+                outlineMesh.applyMatrix4(worldMatrix);
+                outlineMesh.scale.multiplyScalar(1.02); // 2% larger
+                
+                parentGroup.add(outlineMesh);
+            }
+        });
+    }
+    
+    // Update world matrices first
+    targetObject.updateMatrixWorld(true);
+    
+    // Process the target object
+    processObject(targetObject, outlineGroup);
+    
+    return outlineGroup;
+}
+
+function removeOutline() {
+    if (selectedOutline) {
+        scene.remove(selectedOutline);
+        selectedOutline = null;
+    }
+}
+
+//=============================================================================
+// Overlay Management
+//=============================================================================
+function showOverlay(title: string, description: string, specs: Record<string, string>) {
+    const overlay = document.getElementById('speakerOverlay');
+    if (overlay) {
+        // Update content
+        const titleElement = overlay.querySelector('h2');
+        const descElement = overlay.querySelector('p');
+        const specsElement = overlay.querySelector('.specs');
+        
+        if (titleElement) titleElement.textContent = title;
+        if (descElement) descElement.textContent = description;
+        
+        if (specsElement) {
+            specsElement.innerHTML = '';
+            Object.entries(specs).forEach(([key, value]) => {
+                const specItem = document.createElement('div');
+                specItem.className = 'spec-item';
+                specItem.innerHTML = `<span class="spec-label">${key}:</span> <span class="spec-value">${value}</span>`;
+                specsElement.appendChild(specItem);
+            });
+        }
+        
+        overlay.classList.add('visible');
+    }
+}
+
+function hideOverlay() {
+    const overlay = document.getElementById('speakerOverlay');
+    if (overlay) {
+        overlay.classList.remove('visible');
+        setTimeout(() => {
+            if (!overlay.classList.contains('visible')) {
+                if (selectedMesh && selectedInstance !== -1) {
+                    const matrix = new THREE.Matrix4();
+                    selectedMesh.getMatrixAt(selectedInstance, matrix);
+                    const position = new THREE.Vector3();
+                    const quaternion = new THREE.Quaternion();
+                    const scale = new THREE.Vector3();
+                    matrix.decompose(position, quaternion, scale);
+                    position.z -= selectionOffset;
+                    matrix.compose(position, quaternion, scale);
+                    selectedMesh.setMatrixAt(selectedInstance, matrix);
+                    selectedMesh.instanceMatrix.needsUpdate = true;
+                    selectedMesh = null;
+                    selectedInstance = -1;
+                }
+            }
+        }, 300);
+    }
+}
+
+//=============================================================================
+// Selection Handler
+//=============================================================================
+function handleSelection(event: MouseEvent) {
+    if (!canvas) return;
+    
+    const rect = canvas.getBoundingClientRect();
+    pointer.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    pointer.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    raycaster.setFromCamera(pointer, camera);
+
+    // Find closest intersection - check both instanced meshes and regular objects
+    let closestIntersection: Intersection | null = null;
+    let minDistance = Infinity;
+
+    // Check instanced meshes (old speaker system if any remain)
+    for (const meshItem of instancedMeshes) {
+        const intersects = raycaster.intersectObject(meshItem) as Intersection[];
+        if (intersects.length > 0 && intersects[0].distance < minDistance) {
+            closestIntersection = intersects[0];
+            minDistance = intersects[0].distance;
+        }
+    }
+
+    // Check regular clickable objects (new speaker/subwoofer system)
+    for (const object of clickableObjects) {
+        const intersects = raycaster.intersectObject(object, true) as Intersection[]; // recursive for all children
+        if (intersects.length > 0 && intersects[0].distance < minDistance) {
+            closestIntersection = intersects[0];
+            minDistance = intersects[0].distance;
+        }
+    }
+
+    // If no intersection found, deselect current selection
+    if (!closestIntersection) {
+        if (selectedMesh && selectedInstance !== -1) {
+            // Handle old InstancedMesh system
+            const matrix = new THREE.Matrix4();
+            selectedMesh.getMatrixAt(selectedInstance, matrix);
+            const position = new THREE.Vector3();
+            const quaternion = new THREE.Quaternion();
+            const scale = new THREE.Vector3();
+            matrix.decompose(position, quaternion, scale);
+            position.z -= selectionOffset;
+            matrix.compose(position, quaternion, scale);
+            selectedMesh.setMatrixAt(selectedInstance, matrix);
+            selectedMesh.instanceMatrix.needsUpdate = true;
+            selectedMesh = null;
+            selectedInstance = -1;
+        }
+        if (selectedObject) {
+            // Handle new Object3D system
+            selectedObject.position.z -= selectionOffset;
+            selectedObject = null;
+        }
+        removeOutline(); // Remove outline when deselecting
+        hideOverlay();
+        return;
+    }
+
+    // Handle new Object3D system (speakers/subwoofers)
+    // Check if the hit object or its parent is in clickableObjects
+    let hitObject = closestIntersection.object;
+    let clickableParent: THREE.Object3D | null = null;
+    
+    // Walk up the hierarchy to find the clickable object
+    let current: THREE.Object3D | null = hitObject;
+    while (current) {
+        if (clickableObjects.includes(current)) {
+            clickableParent = current;
+            break;
+        }
+        current = current.parent;
+    }
+    
+    if (clickableParent) {
+        console.log('Click detected on object:', clickableParent);
+
+        if (selectedObject === clickableParent) {
+            hideOverlay();
+            if (selectedObject) {
+                selectedObject.position.z -= selectionOffset;
+            }
+            selectedObject = null;
+            removeOutline(); // Remove outline when deselecting
+            return;
+        }
+
+        // Deselect previous selection
+        if (selectedObject) {
+            selectedObject.position.z -= selectionOffset;
+            removeOutline(); // Remove previous outline
+        }
+        if (selectedMesh && selectedInstance !== -1) {
+            const matrix = new THREE.Matrix4();
+            selectedMesh.getMatrixAt(selectedInstance, matrix);
+            const position = new THREE.Vector3();
+            const quaternion = new THREE.Quaternion();
+            const scale = new THREE.Vector3();
+            matrix.decompose(position, quaternion, scale);
+            position.z -= selectionOffset;
+            matrix.compose(position, quaternion, scale);
+            selectedMesh.setMatrixAt(selectedInstance, matrix);
+            selectedMesh.instanceMatrix.needsUpdate = true;
+            selectedMesh = null;
+            selectedInstance = -1;
+        }
+
+        // Select new object
+        selectedObject = clickableParent;
+        clickableParent.position.z += selectionOffset;
+        
+        // Add purple outline to selected object
+        const outline = createOutline(clickableParent);
+        if (outline) {
+            selectedOutline = outline;
+            scene.add(outline);
+        }
+        
+        // Show overlay using metadata from the GLTF file first, then fallback to config
+        let modelMetadata: any = null;
+        
+        // Try to get metadata from GLTF userData
+        if (clickableParent.userData && Object.keys(clickableParent.userData).length > 0) {
+            modelMetadata = clickableParent.userData;
+        }
+        
+        // Fallback to speakerConfig if no GLTF metadata found
+        const speakerConfig = (clickableParent as any).speakerConfig;
+        
+        if (modelMetadata && (modelMetadata.speakerType || modelMetadata.name)) {
+            // Use GLTF metadata with speakerType as heading
+            const heading = modelMetadata.speakerType || modelMetadata.name || "Unknown";
+            const description = modelMetadata.description || "No description";
+            
+            // Create specs object with name as the type if available
+            let specs = modelMetadata.specs ? { ...modelMetadata.specs } : {};
+            if (modelMetadata.name && modelMetadata.speakerType) {
+                specs = { "Type": modelMetadata.name, ...specs };
+            }
+            
+            showOverlay(heading, description, specs);
+        } else if (speakerConfig) {
+            // Use speakerConfig as fallback with same structure
+            const heading = speakerConfig.speakerType || speakerConfig.name || "Unknown";
+            const description = speakerConfig.description || "No description";
+            
+            // Create specs object with name as the type if available
+            let specs = speakerConfig.specs ? { ...speakerConfig.specs } : {};
+            if (speakerConfig.name && speakerConfig.speakerType) {
+                specs = { "Type": speakerConfig.name, ...specs };
+            }
+            
+            showOverlay(heading, description, specs);
+        } else {
+            // Final fallback
+            showOverlay("Speaker", "Audio equipment", { "Type": "Unknown" });
+        }
+        return;
+    }
+
+    // Handle old InstancedMesh system (if any remain)
+    const hitInstanceId = closestIntersection.instanceId;
+    if (hitInstanceId === undefined) return;
+
+    const hitMesh = closestIntersection.object as THREE.InstancedMesh;
+    console.log('Click detected on instance:', hitInstanceId);
+
+    if (selectedMesh === hitMesh && selectedInstance === hitInstanceId) {
+        hideOverlay();
+        return;
+    }
+
+    if (selectedMesh && selectedInstance !== -1) {
+        const prevMatrix = new THREE.Matrix4();
+        selectedMesh.getMatrixAt(selectedInstance, prevMatrix);
+        const prevPosition = new THREE.Vector3();
+        const prevQuaternion = new THREE.Quaternion();
+        const prevScale = new THREE.Vector3();
+        prevMatrix.decompose(prevPosition, prevQuaternion, prevScale);
+        prevPosition.z -= selectionOffset;
+        prevMatrix.compose(prevPosition, prevQuaternion, prevScale);
+        selectedMesh.setMatrixAt(selectedInstance, prevMatrix);
+        selectedMesh.instanceMatrix.needsUpdate = true;
+    }
+
+    const newMatrix = new THREE.Matrix4();
+    hitMesh.getMatrixAt(hitInstanceId, newMatrix);
+    const newPosition = new THREE.Vector3();
+    const newQuaternion = new THREE.Quaternion();
+    const newScale = new THREE.Vector3();
+    newMatrix.decompose(newPosition, newQuaternion, newScale);
+    newPosition.z += selectionOffset;
+    newMatrix.compose(newPosition, newQuaternion, newScale);
+    hitMesh.setMatrixAt(hitInstanceId, newMatrix);
+    hitMesh.instanceMatrix.needsUpdate = true;
+
+    selectedMesh = hitMesh;
+    selectedInstance = hitInstanceId;
+    
+    // Show overlay with speaker content
+    showOverlay("Speaker", "High-quality studio monitor", {
+        "Type": "Active Studio Monitor",
+        "Power": "75W + 25W",
+        "Frequency Response": "45Hz - 22kHz",
+        "Drivers": "6.5\" Woofer + 1\" Tweeter",
+        "Connections": "XLR, TRS"
+    });
+}
+
+//=============================================================================
+// Event Handlers
+//=============================================================================
+// Overlay controls
+if (typeof document !== 'undefined') {
+    const closeButton = document.querySelector('.close-button');
+    const overlay = document.getElementById('speakerOverlay');
+    const actionButton = document.querySelector('.action-button');
+    const detailButton = document.getElementById('detailButton');
+
+    if (closeButton) {
+        closeButton.addEventListener('click', () => {
+            hideOverlay();
+        });
+    }
+
+    if (overlay) {
+        overlay.addEventListener('click', (e) => {
+            if (e.target === overlay) {
+                hideOverlay();
+            }
+        });
+    }
+
+    if (actionButton) {
+        actionButton.addEventListener('click', () => {
+            console.log('More details clicked for speaker:', selectedInstance);
+            // Add your action here
+        });
+    }
+
+    if (detailButton) {
+        detailButton.addEventListener('click', () => {
+            // Get the selected speaker data
+            let speakerData: any = null;
+            if (selectedObject && selectedObject.userData) {
+                speakerData = selectedObject.userData;
+            } else if (selectedObject && (selectedObject as any).speakerConfig) {
+                speakerData = (selectedObject as any).speakerConfig;
+            }
+            
+            if (speakerData) {
+                // Store speaker data in sessionStorage for the detail page
+                sessionStorage.setItem('speakerDetail', JSON.stringify(speakerData));
+                // Navigate to detail page
+                window.location.href = '/speaker-detail';
+            }
+        });
+    }
+}
+
+// Window resize
+window.addEventListener('resize', () => {
+    sizes.width = window.innerWidth;
+    sizes.height = window.innerHeight;
+
+    camera.aspect = sizes.width / sizes.height;
+    camera.updateProjectionMatrix();
+
+    renderer.setSize(sizes.width, sizes.height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+});
+
+// Mouse events
+canvas.addEventListener('mousedown', ((event: Event) => {
+    const mouseEvent = event as MouseEvent;
+    if (mouseEvent.button === 0) {
+        isDragging = true;
+        totalDragMovement = 0;
+        lastPanX = mouseEvent.clientX;
+    }
+}) as EventListener);
+
+window.addEventListener('mousemove', ((event: Event) => {
+    const mouseEvent = event as MouseEvent;
+    if (isDragging) {
+        const deltaX = mouseEvent.clientX - lastPanX;
+        totalDragMovement += Math.abs(deltaX);
+
+        if (totalDragMovement > dragThreshold) {
+            isPanning = true;
+            panVelocity = -deltaX * mousePanSpeed; // Using faster mouse speed
+        }
+
+        lastPanX = mouseEvent.clientX;
+    }
+}) as EventListener);
+
+window.addEventListener('mouseup', ((event: Event) => {
+    const mouseEvent = event as MouseEvent;
+    if (mouseEvent.button === 0) {
+        if (!isPanning && isDragging) {
+            handleSelection(mouseEvent);
+        }
+        isDragging = false;
+        isPanning = false;
+    }
+}) as EventListener);
+
+// Touch events for mobile/tablet support
+canvas.addEventListener('touchstart', ((event: Event) => {
+    const touchEvent = event as TouchEvent;
+    event.preventDefault(); // Prevent scrolling
+    if (touchEvent.touches.length === 1) {
+        isDragging = true;
+        totalDragMovement = 0;
+        lastPanX = touchEvent.touches[0].clientX;
+    }
+}) as EventListener);
+
+canvas.addEventListener('touchmove', ((event: Event) => {
+    const touchEvent = event as TouchEvent;
+    event.preventDefault(); // Prevent scrolling
+    if (isDragging && touchEvent.touches.length === 1) {
+        const deltaX = touchEvent.touches[0].clientX - lastPanX;
+        totalDragMovement += Math.abs(deltaX);
+
+        if (totalDragMovement > dragThreshold) {
+            isPanning = true;
+            panVelocity = -deltaX * touchPanSpeed; // Using touch speed
+        }
+
+        lastPanX = touchEvent.touches[0].clientX;
+    }
+}) as EventListener);
+
+canvas.addEventListener('touchend', ((event: Event) => {
+    const touchEvent = event as TouchEvent;
+    event.preventDefault(); // Prevent scrolling
+    if (!isPanning && isDragging && touchEvent.changedTouches.length === 1) {
+        // Convert touch to mouse-like event for selection
+        const touch = touchEvent.changedTouches[0];
+        const fakeMouseEvent = {
+            clientX: touch.clientX,
+            clientY: touch.clientY,
+            button: 0
+        } as MouseEvent;
+        handleSelection(fakeMouseEvent);
+    }
+    isDragging = false;
+    isPanning = false;
+}) as EventListener);
+
+//=============================================================================
+// Model Loading
+//=============================================================================
+const dracoLoader = new DRACOLoader();
+dracoLoader.setDecoderPath('/draco/');
+
+const gltfLoader = new GLTFLoader();
+gltfLoader.setDRACOLoader(dracoLoader);
+
+// Function to properly position models on ground
+function positionModelOnGround(model: THREE.Object3D, x: number, z: number, rotationY: number = 0) {
+    // Center the model
+    const box = new THREE.Box3().setFromObject(model);
+    const center = new THREE.Vector3();
+    box.getCenter(center);
+    model.position.sub(center);
+    
+    // Place bottom at Y=0 (ground level)
+    const yPos = -box.min.y;
+    model.position.set(x, yPos, z);
+    model.rotation.y = rotationY;
+    model.scale.set(1, 1, 1);
+    
+    // Set up wireframe rendering with EdgesGeometry
+    model.traverse((child: THREE.Object3D) => {
+        if ((child as THREE.Mesh).isMesh && (child as THREE.Mesh).geometry) {
+            const mesh = child as THREE.Mesh;
+            
+            // Hide the original mesh
+            mesh.visible = false;
+            
+            // Create edges geometry from the mesh
+            const edges = new THREE.EdgesGeometry(mesh.geometry, 15); // 15 degree threshold for edge detection
+            const lineMaterial = new THREE.LineBasicMaterial({ 
+                color: 0x42cc5d, // Green color for edges
+                linewidth: 1
+            });
+            const lineSegments = new THREE.LineSegments(edges, lineMaterial);
+            
+            // Copy the mesh's transformation
+            lineSegments.position.copy(mesh.position);
+            lineSegments.rotation.copy(mesh.rotation);
+            lineSegments.scale.copy(mesh.scale);
+            
+            // Add the wireframe to the parent
+            if (mesh.parent) {
+                mesh.parent.add(lineSegments);
+            }
+        }
+    });
+    
+    return box.max.y - box.min.y; // Return height for stacking
+}
+
+// Speaker configuration - loaded from external config file
+// Edit src/config/speakers.json to modify speaker configurations
+import speakerConfigData from '../config/speakers.json';
+const speakerConfigs = speakerConfigData.speakers;
+
+// Model cache to avoid loading the same model multiple times
+const modelCache = new Map<string, THREE.Group>();
+const edgeGeometryCache = new Map<THREE.BufferGeometry, THREE.EdgesGeometry>();
+
+// Shared line material for all wireframes
+const sharedLineMaterial = new THREE.LineBasicMaterial({ 
+    color: 0x42cc5d, // Green color for edges
+    linewidth: 1
+});
+
+// Function to create wireframe from model with caching
+function createWireframeFromModel(model: THREE.Object3D): THREE.Group {
+    const wireframeGroup = new THREE.Group();
+    
+    model.traverse((child: THREE.Object3D) => {
+        if ((child as THREE.Mesh).isMesh && (child as THREE.Mesh).geometry) {
+            const mesh = child as THREE.Mesh;
+            
+            // Check cache for edges geometry
+            let edges = edgeGeometryCache.get(mesh.geometry);
+            if (!edges) {
+                edges = new THREE.EdgesGeometry(mesh.geometry, 15);
+                edgeGeometryCache.set(mesh.geometry, edges);
+            }
+            
+            // Reuse shared material
+            const lineSegments = new THREE.LineSegments(edges, sharedLineMaterial);
+            
+            // Copy the mesh's transformation
+            lineSegments.position.copy(mesh.position);
+            lineSegments.rotation.copy(mesh.rotation);
+            lineSegments.scale.copy(mesh.scale);
+            
+            wireframeGroup.add(lineSegments);
+        }
+    });
+    
+    return wireframeGroup;
+}
+
+// Track loading progress
+let loadedModels = 0;
+const totalModels = speakerConfigs.length;
+
+// Load all speaker types using configuration with optimization
+speakerConfigs.forEach((config, configIndex) => {
+    // Check if model is already in cache
+    if (modelCache.has(config.modelPath)) {
+        console.log(`Using cached model: ${config.modelPath}`);
+        const cachedModel = modelCache.get(config.modelPath)!;
+        createInstances(cachedModel, config, configIndex);
+        return;
+    }
+    
+    // Load model only once
+    gltfLoader.load(config.modelPath,
+        (gltf) => {
+            const templateModel = gltf.scene;
+            
+            // Store in cache
+            modelCache.set(config.modelPath, templateModel);
+            
+            // Create all instances from this single loaded model
+            createInstances(templateModel, config, configIndex);
+            
+            loadedModels++;
+            console.log(`Loaded ${loadedModels}/${totalModels}: ${config.modelPath}`);
+        },
+        undefined,
+        function (error: any) {
+            console.error(`Load Error ${config.name}:`, error);
+        }
+    );
+});
+
+// Function to create instances from a template model
+function createInstances(templateModel: THREE.Group, config: any, configIndex: number) {
+    // Get model height for stacking calculations
+    const tempBox = new THREE.Box3().setFromObject(templateModel);
+    const modelHeight = tempBox.max.y - tempBox.min.y;
+    
+    config.instances.forEach((instance: any, instanceIndex: number) => {
+        // Position the model
+        const finalX = instance.x;
+        const finalY = instance.y;
+        const finalZ = instance.z;
+        const rotation = instance.rotationY || 0;
+        
+        // Create wireframe once and reuse geometry
+        const wireframe = createWireframeFromModel(templateModel);
+        
+        if (instance.onGround) {
+            // Position on ground
+            const box = new THREE.Box3().setFromObject(templateModel);
+            const center = new THREE.Vector3();
+            box.getCenter(center);
+            
+            const yPos = -box.min.y;
+            wireframe.position.set(finalX - center.x, yPos - center.y, finalZ - center.z);
+            wireframe.rotation.y = rotation;
+        } else {
+            // For elevated models
+            const box = new THREE.Box3().setFromObject(templateModel);
+            const center = box.getCenter(new THREE.Vector3());
+            
+            wireframe.position.set(finalX - center.x, finalY - center.y, finalZ - center.z);
+            wireframe.rotation.y = rotation;
+        }
+        
+        // Add metadata to the wireframe for clicking
+        (wireframe as any).speakerConfig = config;
+        (wireframe as any).instanceIndex = instanceIndex;
+        (wireframe as any).configIndex = configIndex;
+        
+        // Add metadata to userData for overlay system
+        wireframe.userData = {
+            speakerType: config.speakerType,
+            name: config.name,
+            description: config.description,
+            specs: config.specs,
+            modelPath: config.modelPath
+        };
+        
+        scene.add(wireframe);
+        clickableObjects.push(wireframe);
+    });
+    
+    console.log(`Created ${config.instances.length} instances of ${config.name}`);
+}
+
+//=============================================================================
+// Animation Loop
+//=============================================================================
+function animate() {
+    const deltaTime = clock.getDelta();
+
+    if (!isPanning) {
+        panVelocity *= Math.exp(-panDamping * deltaTime);
+    }
+
+    camera.position.x += panVelocity * deltaTime;
+    
+    // Update camera target position and orientation
+    cameraTarget.x = camera.position.x;
+    const pitchedDir = new THREE.Vector3(0, Math.sin(cameraPitchRad), -Math.cos(cameraPitchRad));
+    const lookDistance = 100;
+    cameraTarget.copy(camera.position).addScaledVector(pitchedDir, lookDistance);
+    camera.lookAt(cameraTarget);
+
+    // Update light position so it's centered with the camera's view
+    // Place the light slightly behind the camera and above, using camera forward direction
+    const backOffset = 20; // how far behind the camera the light sits
+    const upOffset = 30;   // how much above the camera the light sits
+    const forward = new THREE.Vector3();
+    camera.getWorldDirection(forward);
+    // Calculate light position: camera position minus forward*backOffset, then up
+    const lightPos = camera.position.clone().add(forward.clone().multiplyScalar(-backOffset)).add(new THREE.Vector3(0, upOffset, 0));
+    spotLight.position.copy(lightPos);
+    // Make the spotlight target follow where the camera is looking
+    spotLight.target.position.copy(cameraTarget);
+    spotLight.target.updateMatrixWorld();
+
+    // Sync banner with camera movement
+    const bannerText = document.querySelector('.banner-text') as HTMLElement;
+    if (bannerText) {
+        // Calculate banner offset based on camera position
+        // Scale factor to make the movement feel natural (adjust as needed)
+        const scaleFactor = 0.05; // How much the banner moves relative to camera (reduced for subtlety)
+        const bannerOffset = -camera.position.x * scaleFactor; // Invert for correct direction
+        
+        // Apply the offset by modifying the CSS custom property or style
+        bannerText.style.setProperty('--camera-offset', `${bannerOffset}px`);
+    }
+
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+}
+
+// Start animation after everything is set up
+animate();
+</script>

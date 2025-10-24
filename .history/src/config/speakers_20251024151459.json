@@ -1,0 +1,102 @@
+{
+  "speakers": [
+    {
+      "modelPath": "/speaker.glb",
+      "speakerType": "Top",
+      "name": "8\" + 1\" Passive Monitor",
+      "description": "Passive 8-inch studio monitor with 1-inch tweeter",
+      "specs": {
+        "Power": "500W RMS",
+        "Frequency Response": "90Hz - 20kHz",
+        "Drivers": "8\" Woofer + 1\" Tweeter",
+        "Connections": "Speakon",
+        "Crossover": "4 Pole Active Crossover"
+      },
+      "instances": [
+        {
+          "x": -1400,
+          "y": 1210,
+          "z": 0,
+          "onGround": false,
+          "comment": "Stack 1 - Top speaker"
+        },
+        {
+          "x": 0,
+          "y": 1210,
+          "z": 0,
+          "onGround": false,
+          "comment": "Stack 2 - Top speaker"
+        },
+        {
+          "x": 1400,
+          "y": 1210,
+          "z": 0,
+          "onGround": false,
+          "comment": "Stack 3 - Top speaker"
+        }
+      ]
+    },
+    {
+      "modelPath": "/sub.glb",
+      "speakerType": "Subwoofer",
+      "name": "Dual 12\" Passive Subwoofer",
+      "description": "Dual 12-inch passive subwoofer",
+      "specs": {
+        "Power": "2000W RMS",
+        "Frequency Response": "20Hz - 150Hz",
+        "Drivers": "Dual 12\" Woofers",
+        "Connections": "Speakon"
+      },
+      "instances": [
+        {
+          "x": -1400,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 1 - Bottom sub"
+        },
+        {
+          "x": -1400,
+          "y": 605,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": false,
+          "comment": "Stack 1 - Top sub"
+        },
+        {
+          "x": 0,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 2 - Bottom sub"
+        },
+        {
+          "x": 0,
+          "y": 605,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": false,
+          "comment": "Stack 2 - Top sub"
+        },
+        {
+          "x": 1400,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true,
+          "comment": "Stack 3 - Bottom sub"
+        },
+        {
+          "x": 1400,
+          "y": 605,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": false,
+          "comment": "Stack 3 - Top sub"
+        }
+      ]
+    }
+  ]
+}

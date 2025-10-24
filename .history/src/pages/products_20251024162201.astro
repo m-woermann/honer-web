@@ -1,0 +1,436 @@
+---
+// products.astro - Product listing page
+import speakersData from '../config/speakers.json';
+
+const products = Object.entries(speakersData.speakerTypes).map(([type, data]) => ({
+  type,
+  ...data
+}));
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Products - Horner Audio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page-container">
+        <!-- Main heading -->
+        <div class="main-heading">
+            <h1>Horner Audio</h1>
+        </div>
+
+        <button class="back-button" onclick="window.location.href='/'">← Back</button>
+
+        <!-- Product Grid -->
+        <div class="product-container">
+            <h2 class="section-title">Products</h2>
+            
+            <div class="product-grid">
+                {products.map((product) => (
+                    <a href={`/speaker-detail?model=${product.modelPath}`} class="product-card">
+                        <div class="product-image" data-model={product.modelPath}></div>
+                        <div class="product-info">
+                            <h3 class="product-name">
+                                <span class="product-model">{product.name}</span>
+                            </h3>
+                            <p class="product-description">{product.description}</p>
+                            <ul class="product-specs">
+                                {Object.entries(product.specs).map(([key, value]) => (
+                                    <li><strong>{key}:</strong> {value}</li>
+                                ))}
+                            </ul>
+                        </div>
+                    </a>
+                ))}
+            </div>
+        </div>
+
+        <!-- Bottom scrolling banner -->
+        <div class="bottom-banner">
+            <div class="banner-content">
+                <span class="banner-text">
+                    <a href="/" class="banner-link">HOME</a> • 
+                    <a href="/products" class="banner-link">PRODUCTS</a> • 
+                    <span class="banner-link">CONTACT</span> • 
+                    <span class="banner-link">ABOUT</span> • 
+                    <span class="banner-link">IMPRESSUM</span> • 
+                    <span class="banner-link">PRIVACY</span> • 
+                    <span class="banner-link">TERMS</span> • 
+                    <span class="banner-link">SUPPORT</span> • 
+                    <a href="/" class="banner-link">HOME</a> • 
+                    <a href="/products" class="banner-link">PRODUCTS</a> • 
+                    <span class="banner-link">CONTACT</span> • 
+                    <span class="banner-link">ABOUT</span> • 
+                    <span class="banner-link">IMPRESSUM</span> • 
+                    <span class="banner-link">PRIVACY</span> • 
+                    <span class="banner-link">TERMS</span> • 
+                    <span class="banner-link">SUPPORT</span> • 
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #383e42; /* RAL 7016 Anthracite Grey */
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .page-container {
+            min-height: 100vh;
+            padding-bottom: 60px;
+        }
+
+        /* Main heading */
+        .main-heading {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            z-index: 1000;
+            pointer-events: none;
+        }
+
+        .main-heading h1 {
+            font-family: 'Michroma', sans-serif;
+            font-size: 3rem;
+            font-weight: 400;
+            color: #42cc5d;
+            margin: 0;
+            text-shadow: 0 0 20px rgba(66, 204, 93, 0.3);
+            letter-spacing: 3px;
+        }
+
+        .back-button {
+            position: fixed;
+            top: 40px;
+            right: 40px;
+            background: transparent;
+            border: 1px solid rgba(66, 204, 93, 0.3);
+            color: #42cc5d;
+            padding: 0.8rem 1.5rem;
+            border-radius: 4px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-button:hover {
+            background: rgba(66, 204, 93, 0.1);
+            border-color: rgba(66, 204, 93, 0.5);
+        }
+
+        .product-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 140px 40px 40px;
+        }
+
+        .section-title {
+            font-family: 'Michroma', sans-serif;
+            font-size: 2rem;
+            color: #42cc5d;
+            margin-bottom: 3rem;
+            text-align: center;
+        }
+
+        .product-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .product-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            text-decoration: none;
+            color: white;
+            cursor: pointer;
+            height: 200px;
+        }
+
+        .product-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-color: rgba(66, 204, 93, 0.3);
+            transform: translateX(8px);
+        }
+
+        .product-image {
+            width: 250px;
+            height: 200px;
+            flex-shrink: 0;
+            background: rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .product-image canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        .product-info {
+            padding: 1.5rem;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .product-name {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-model {
+            color: #42cc5d;
+        }
+
+        .product-description {
+            font-size: 0.9rem;
+            color: #999;
+            margin-bottom: 1rem;
+        }
+
+        .product-specs {
+            list-style: none;
+        }
+
+        .product-specs li {
+            font-size: 0.85rem;
+            color: #ccc;
+            padding: 0.3rem 0;
+        }
+
+        .product-specs li strong {
+            color: #42cc5d;
+            margin-right: 0.3rem;
+        }
+
+        /* Bottom scrolling banner */
+        .bottom-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 60px;
+            background: transparent;
+            z-index: 999;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+        }
+
+        .banner-content {
+            position: absolute;
+            white-space: nowrap;
+            height: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        .banner-text {
+            font-family: 'Michroma', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: #42cc5d;
+            letter-spacing: 2px;
+            display: inline-block;
+            animation: scroll-banner 60s linear infinite;
+        }
+
+        .banner-link {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            color: #42cc5d;
+        }
+
+        .banner-link:hover {
+            text-shadow: 0 0 8px rgba(66, 204, 93, 0.5);
+        }
+
+        @keyframes scroll-banner {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+            @media (max-width: 768px) {
+            .main-heading h1 {
+                font-size: 2rem;
+                letter-spacing: 1px;
+            }
+
+            .main-heading {
+                top: 20px;
+                left: 20px;
+            }
+
+            .back-button {
+                top: 20px;
+                right: 20px;
+                padding: 0.6rem 1rem;
+                font-size: 0.8rem;
+            }
+
+            .product-container {
+                padding: 100px 20px 40px;
+            }
+
+            .product-card {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .product-image {
+                width: 100%;
+                height: 200px;
+            }
+
+            .product-info {
+                padding: 1rem;
+            }
+
+            .section-title {
+                font-size: 1.5rem;
+                margin-bottom: 2rem;
+            }
+        }
+    </style>
+
+    <script type="module">
+        import * as THREE from 'https://cdn.skypack.dev/three@0.132.2';
+        import { GLTFLoader } from 'https://cdn.skypack.dev/three@0.132.2/examples/jsm/loaders/GLTFLoader.js';
+        import { DRACOLoader } from 'https://cdn.skypack.dev/three@0.132.2/examples/jsm/loaders/DRACOLoader.js';
+
+        // Initialize 3D viewers for each product
+        const productImages = document.querySelectorAll('.product-image');
+        
+        productImages.forEach((container) => {
+            const modelPath = container.getAttribute('data-model');
+            if (!modelPath) return;
+
+            // Create scene
+            const scene = new THREE.Scene();
+            
+            // Create camera
+            const camera = new THREE.PerspectiveCamera(35, 1, 0.1, 1000);
+            camera.position.set(0, 0, 3);
+            
+            // Create renderer
+            const renderer = new THREE.WebGLRenderer({ 
+                antialias: true, 
+                alpha: true 
+            });
+            renderer.setSize(300, 300);
+            renderer.setClearColor(0x000000, 0);
+            container.appendChild(renderer.domElement);
+            
+            // Add lights
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+            scene.add(ambientLight);
+            
+            const directionalLight1 = new THREE.DirectionalLight(0xffffff, 0.8);
+            directionalLight1.position.set(5, 5, 5);
+            scene.add(directionalLight1);
+            
+            const directionalLight2 = new THREE.DirectionalLight(0xffffff, 0.4);
+            directionalLight2.position.set(-5, -5, -5);
+            scene.add(directionalLight2);
+            
+            // Load model
+            const loader = new GLTFLoader();
+            const dracoLoader = new DRACOLoader();
+            dracoLoader.setDecoderPath('https://www.gstatic.com/draco/versioned/decoders/1.4.3/');
+            loader.setDRACOLoader(dracoLoader);
+            
+            loader.load(modelPath, (gltf) => {
+                const model = gltf.scene;
+                
+                // Create render group with two-pass rendering
+                const renderGroup = new THREE.Group();
+                
+                model.traverse((child) => {
+                    if (child.isMesh) {
+                        // Solid fill
+                        const solidMesh = child.clone();
+                        const solidMaterial = new THREE.MeshBasicMaterial({
+                            color: 0x383e42, // RAL 7016
+                            side: THREE.DoubleSide,
+                            polygonOffset: true,
+                            polygonOffsetFactor: 0.5,
+                            polygonOffsetUnits: 0.5
+                        });
+                        solidMesh.material = solidMaterial;
+                        renderGroup.add(solidMesh);
+                        
+                        // Edges
+                        const edges = new THREE.EdgesGeometry(child.geometry, 15);
+                        const edgeMaterial = new THREE.LineBasicMaterial({ 
+                            color: 0x42cc5d // Green edges
+                        });
+                        const edgeLines = new THREE.LineSegments(edges, edgeMaterial);
+                        edgeLines.position.copy(child.position);
+                        edgeLines.rotation.copy(child.rotation);
+                        edgeLines.scale.copy(child.scale);
+                        renderGroup.add(edgeLines);
+                    }
+                });
+                
+                // Center and scale model
+                const box = new THREE.Box3().setFromObject(renderGroup);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+                
+                renderGroup.position.sub(center);
+                
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 1.5 / maxDim;
+                renderGroup.scale.multiplyScalar(scale);
+                
+                scene.add(renderGroup);
+                
+                // Animation
+                function animate() {
+                    requestAnimationFrame(animate);
+                    renderGroup.rotation.y += 0.005;
+                    renderer.render(scene, camera);
+                }
+                animate();
+            });
+        });
+    </script>
+</body>
+</html>
