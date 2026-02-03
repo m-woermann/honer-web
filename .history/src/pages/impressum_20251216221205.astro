@@ -1,0 +1,135 @@
+---
+// impressum.astro - Legal information and impressum page using StaticPageLayout component
+import StaticPageLayout from '../components/StaticPageLayout.astro';
+---
+
+<StaticPageLayout 
+    title="Impressum" 
+    pageTitle="IMPRESSUM" 
+    description="Legal information and impressum for Horner Audio."
+>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
+        <!-- Left Column -->
+        <div class="space-y-6 md:space-y-8">
+            <div class="border-b border-gray-700 pb-4">
+                <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">COMPANY</div>
+                <div class="font-roboto text-xl md:text-2xl text-white">
+                    Horner Audio
+                </div>
+            </div>
+
+            <div class="border-b border-gray-700 pb-4">
+                <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">LEGAL FORM</div>
+                <div class="font-roboto text-xl md:text-2xl text-white">
+                    Einzelunternehmen
+                </div>
+            </div>
+
+            <div class="border-b border-gray-700 pb-4">
+                <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">OWNER</div>
+                <div class="font-roboto text-xl md:text-2xl text-white">
+                    Carlo
+                </div>
+            </div>
+
+            <div class="border-b border-gray-700 pb-4">
+                <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">ADDRESS</div>
+                <div class="font-roboto text-xl md:text-2xl text-white leading-relaxed">
+                    Lübecker Str. 64<br>
+                    22926 Ahrensburg<br>
+                    Germany
+                </div>
+            </div>
+
+            <div class="border-b border-gray-700 pb-4">
+                <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">PHONE</div>
+                <div class="font-roboto text-xl md:text-2xl text-white">
+                    <a href="tel:+491774041397" class="hover:text-horner-green transition-colors duration-300">+49 177 404 1397</a>
+                </div>
+            </div>
+
+            <div class="border-b border-gray-700 pb-4">
+                <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">EMAIL</div>
+                <div class="font-roboto text-xl md:text-2xl text-white">
+                    <a href="mailto:info@horner-audio.com" class="hover:text-horner-green transition-colors duration-300">info@horner-audio.com</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right Column -->
+        <div class="space-y-6 md:space-y-8">
+            <div class="border-b border-gray-700 pb-4">
+                <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">VAT ID</div>
+                <div class="font-roboto text-xl md:text-2xl text-white">
+                    DE311453522
+                </div>
+            </div>
+
+            <div class="border-b border-gray-700 pb-4">
+                <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">TAX NUMBER</div>
+                <div class="font-roboto text-xl md:text-2xl text-white">
+                    Available upon request
+                </div>
+            </div>
+
+            <div class="border-b border-gray-700 pb-4">
+                <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">JURISDICTION</div>
+                <div class="font-roboto text-xl md:text-2xl text-white">
+                    Amtsgericht Lübeck
+                </div>
+            </div>
+
+            <div class="border-b border-gray-700 pb-4">
+                <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">RESPONSIBLE FOR CONTENT</div>
+                <div class="font-roboto text-xl md:text-2xl text-white leading-relaxed">
+                    Carlo<br>
+                    (Address as above)
+                </div>
+            </div>
+
+            <div class="border-b border-gray-700 pb-4">
+                <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">BUSINESS HOURS</div>
+                <div class="font-roboto text-xl md:text-2xl text-white leading-relaxed">
+                    Monday - Friday: 9:00 - 18:00<br>
+                    Saturday: 10:00 - 16:00<br>
+                    Sunday: Closed
+                </div>
+            </div>
+
+            <div class="border-b border-gray-700 pb-4">
+                <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">PROFESSIONAL LIABILITY</div>
+                <div class="font-roboto text-xl md:text-2xl text-white">
+                    Available upon request
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Legal Disclaimer -->
+    <div class="mt-12 pt-8 border-t border-gray-700">
+        <h3 class="font-michroma text-2xl md:text-3xl text-horner-green mb-6 tracking-wider uppercase">Legal Disclaimer</h3>
+        
+        <div class="space-y-6">
+            <div class="bg-gray-800/50 p-6 border-l-4 border-horner-green">
+                <h4 class="font-roboto text-lg md:text-xl text-white font-semibold mb-3">Liability for Content</h4>
+                <p class="font-roboto text-base md:text-lg text-gray-300 leading-relaxed">
+                    The contents of our pages have been created with the utmost care. However, we cannot guarantee the accuracy, completeness, or timeliness of the content.
+                </p>
+            </div>
+            
+            <div class="bg-gray-800/50 p-6 border-l-4 border-horner-green">
+                <h4 class="font-roboto text-lg md:text-xl text-white font-semibold mb-3">Liability for Links</h4>
+                <p class="font-roboto text-base md:text-lg text-gray-300 leading-relaxed">
+                    Our website contains links to external third-party websites. We have no control over these sites and therefore cannot accept responsibility for their content.
+                </p>
+            </div>
+            
+            <div class="bg-gray-800/50 p-6 border-l-4 border-horner-green">
+                <h4 class="font-roboto text-lg md:text-xl text-white font-semibold mb-3">Copyright</h4>
+                <p class="font-roboto text-base md:text-lg text-gray-300 leading-relaxed">
+                    The content and works created by the site operators on these pages are subject to German copyright law. Duplication, processing, distribution, and any form of commercialization beyond the scope of copyright law requires written consent from the author or creator.
+                </p>
+            </div>
+        </div>
+    </div>
+</StaticPageLayout>

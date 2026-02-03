@@ -1,0 +1,60 @@
+---
+// impressum.astro - Legal information and impressum page using StaticPageLayout component
+import StaticPageLayout from '../components/StaticPageLayout.astro';
+---
+
+<StaticPageLayout 
+    title="Impressum" 
+    pageTitle="IMPRESSUM" 
+    description="Legal information and impressum for Horner Audio."
+>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 text-white">
+        <!-- Left Column -->
+        <div class="space-y-4">
+            <p class="font-roboto text-base leading-relaxed">
+                <strong>Company:</strong> Horner Audio<br>
+                <strong>Legal Form:</strong> Einzelunternehmen<br>
+                <strong>Owner:</strong> Carlo<br>
+                <strong>Address:</strong> Lübecker Str. 64, 22926 Ahrensburg, Germany<br>
+                <strong>Phone:</strong> +49 177 404 1397<br>
+                <strong>Email:</strong> info@horner-audio.com
+            </p>
+            
+            <p class="font-roboto text-base leading-relaxed">
+                <strong>VAT ID:</strong> DE311453522<br>
+                <strong>Tax Number:</strong> Available upon request<br>
+                <strong>Jurisdiction:</strong> Amtsgericht Lübeck<br>
+                <strong>Responsible for Content:</strong> Carlo (Address as above)
+            </p>
+            
+            <p class="font-roboto text-base leading-relaxed">
+                <strong>Business Hours:</strong><br>
+                Monday - Friday: 9:00 - 18:00<br>
+                Saturday: 10:00 - 16:00<br>
+                Sunday: Closed
+            </p>
+        </div>
+
+        <!-- Right Column -->
+        <div class="space-y-4">
+            <div>
+                <h3 class="font-roboto text-lg font-semibold mb-2">Legal Disclaimer</h3>
+                <p class="font-roboto text-base leading-relaxed">
+                    <strong>Liability for Content:</strong> The contents of our pages have been created with the utmost care. However, we cannot guarantee the accuracy, completeness, or timeliness of the content.
+                </p>
+            </div>
+            
+            <p class="font-roboto text-base leading-relaxed">
+                <strong>Liability for Links:</strong> Our website contains links to external third-party websites. We have no control over these sites and therefore cannot accept responsibility for their content.
+            </p>
+            
+            <p class="font-roboto text-base leading-relaxed">
+                <strong>Copyright:</strong> The content and works created by the site operators on these pages are subject to German copyright law. Duplication, processing, distribution, and any form of commercialization beyond the scope of copyright law requires written consent from the author or creator.
+            </p>
+            
+            <p class="font-roboto text-base leading-relaxed">
+                <strong>Professional Liability:</strong> Available upon request
+            </p>
+        </div>
+    </div>
+</StaticPageLayout>

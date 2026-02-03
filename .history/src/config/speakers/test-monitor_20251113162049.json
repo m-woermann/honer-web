@@ -1,0 +1,21 @@
+{
+    "id": "test-monitor",
+    "name": "Test Monitor",
+    "description": "Test 10\" + Horn Active",
+    "specs": {
+        "Power": "800W RMS",
+        "Frequency Response": "50Hz - 18kHz",
+        "Size": "400mm × 600mm × 300mm",
+        "Drivers": "10\" Woofer + 1\" Horn",
+        "Connections": "XLR, TRS",
+        "Crossover": "Active 2-Way"
+    },
+    "category": "monitor",
+    "type": "active",
+    "weight": "20kg",
+    "dimensions": {
+        "width": "400mm",
+        "height": "600mm",
+        "depth": "300mm"
+    }
+}

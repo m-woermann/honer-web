@@ -1,0 +1,41 @@
+---
+// about.astro - About page using PageLayout component
+import PageLayout from '../components/PageLayout.astro';
+---
+
+<PageLayout 
+    title="About" 
+    pageTitle="ABOUT"
+>
+    <div class="lg:columns-2 lg:gap-16 block">
+        <p class="font-roboto text-lg md:text-xl lg:text-2xl leading-relaxed text-gray-300 mb-8 break-inside-avoid mt-12">Horner Audio is a Berlin-based acoustic engineering studio whose passion lies in crafting exceptional sonic experiences for the spaces where people gather. From live-sound installations and PA rentals to custom system design and consulting, our mission is to deliver the highest-fidelity audio solutions that are tailored to each unique environment.</p>
+        
+        <p class="font-roboto text-lg md:text-xl lg:text-2xl leading-relaxed text-gray-300 mb-8 break-inside-avoid">At the heart of what we do is the belief that sound isn't just heard — it's felt. We collaborate with venue owners, event-organisers, artists and sound-designers to build systems that don't just reproduce audio, but shape atmosphere, enhance engagement and elevate performance. Whether we're engineering a horn-loaded speaker design or fine-tuning acoustics for a club-space, our focus remains on clarity, presence and the immersive power of well-executed sound.</p>
+        
+        <div class="mb-8 break-inside-avoid">
+            <h3 class="font-michroma text-2xl md:text-3xl text-horner-green mt-4 mb-8 tracking-wider uppercase">Our services include:</h3>
+            
+            <div class="grid grid-cols-1 gap-6 md:gap-8">
+                <div class="bg-gray-800/50 p-6 border-l-4 border-horner-green">
+                    <p class="font-roboto text-lg md:text-xl text-white">Acoustic consulting & system design</p>
+                </div>
+                
+                <div class="bg-gray-800/50 p-6 border-l-4 border-horner-green">
+                    <p class="font-roboto text-lg md:text-xl text-white">PA rental & installation</p>
+                </div>
+                
+                <div class="bg-gray-800/50 p-6 border-l-4 border-horner-green">
+                    <p class="font-roboto text-lg md:text-xl text-white">Custom speaker-projects, prototyping and listening events (we've shared sneak peeks of new designs in our Berlin demo sessions)</p>
+                </div>
+                
+                <div class="bg-gray-800/50 p-6 border-l-4 border-horner-green">
+                    <p class="font-roboto text-lg md:text-xl text-white">On-site tuning and support to ensure your sound environment delivers consistently at its best</p>
+                </div>
+            </div>
+        </div>
+        
+        <p class="font-roboto text-lg md:text-xl lg:text-2xl leading-relaxed text-gray-300 mb-8 break-inside-avoid">We operate with an ethos of craftsmanship, transparency and responsiveness: your project's needs become our mission, and we believe in building relationships as much as building rigs. Whether you run a small intimate venue or a club-scale installation, we bring the same dedication to detail, performance and service.</p>
+        
+        <p class="font-roboto text-xl md:text-2xl lg:text-3xl leading-relaxed text-horner-green mt-8 font-semibold text-center break-inside-avoid"><strong>Horner Audio — engineering sound, creating impact.</strong></p>
+    </div>
+</PageLayout>

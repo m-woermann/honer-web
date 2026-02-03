@@ -1,0 +1,873 @@
+---
+// speaker-detail.astro - Speaker detail page with rotating 3D model
+// Load all speaker configs to ensure we have the latest data
+const speakerFiles = await Astro.glob('../config/speakers/*.json');
+const speakerConfigs = speakerFiles.map(file => file.default);
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speaker Details</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Desktop Header (StaticPageLayout style) -->
+    <div class="desktop-header">
+        <button id="backButtonDesktop" class="back-button-desktop">BACK</button>
+    </div>
+    
+    <div class="desktop-title-container">
+        <h1 id="speakerTitleDesktop" class="desktop-title">Loading...</h1>
+    </div>
+
+    <div class="page-container">
+        <!-- Top third with 3D canvas (Mobile) / Left square (Desktop) -->
+        <div class="model-section">
+            <canvas class="webgl"></canvas>
+            <button class="back-button mobile-only" onclick="window.history.back()">BACK</button>
+        </div>
+
+        <!-- Bottom two-thirds with speaker info (Mobile) / Right scrollable (Desktop) -->
+        <div class="info-section">
+            <h1 id="speakerTitle" class="mobile-only">Loading...</h1>
+            
+            <div class="specs-grid" id="specsGrid">
+                <!-- Dynamic content will be populated here -->
+            </div>
+
+            <div class="description-container">
+                <h3 class="description-title">DESCRIPTION</h3>
+                <p id="speakerDescription">Please wait...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Full Screen Carousel Section -->
+    <div class="carousel-section" id="carouselSection" style="display: none;">
+        <div class="carousel-container">
+            <div class="carousel" id="imageCarousel">
+                <!-- Images will be populated by JS -->
+            </div>
+            
+            <div class="carousel-navigation" id="carouselNav">
+                <button class="carousel-btn carousel-prev" id="prevBtn" aria-label="Previous image">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg>
+                </button>
+                <button class="carousel-btn carousel-next" id="nextBtn" aria-label="Next image">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="carousel-counter" id="carouselCounter"></div>
+            
+            <div class="carousel-dots" id="carouselDots">
+                <!-- Dots will be populated by JS -->
+            </div>
+        </div>
+    </div>
+
+    <style>
+        :root {
+            --color-anthracite: #383e42;  /* RAL 7016 Anthracite Grey */
+            --color-green: #42cc5d;       /* Horner Audio Green */
+            --color-dark-bg: #1a1a1a;     /* Dark background */
+            --color-light-grey: #A8BAC6;  /* Light grey for ground */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-snap-type: y mandatory;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--color-dark-bg);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .page-container {
+            min-height: 100vh;
+            height: auto;
+            display: flex;
+            flex-direction: column;
+            scroll-snap-align: start;
+        }
+
+        /* Desktop elements hidden by default */
+        .desktop-header, .desktop-title-container {
+            display: none;
+        }
+
+        .mobile-only {
+            display: block;
+        }
+
+        .model-section {
+            height: 33.33vh;
+            position: relative;
+            background: var(--color-anthracite);
+            width: 100%;
+        }
+
+        .webgl {
+            width: 100%;
+            height: 100%;
+        }
+
+        .back-button {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: transparent;
+            color: #42cc5d;
+            border: none;
+            padding: 0;
+            font-family: 'Michroma', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            text-shadow: none;
+        }
+
+        .back-button:hover {
+            color: #42cc5d;
+            text-shadow: 0 0 8px rgba(66, 204, 93, 0.5);
+        }
+
+        .info-section {
+            min-height: 66.67vh;
+            height: auto;
+            padding: 3rem;
+            overflow-y: visible;
+            background: var(--color-dark-bg);
+        }
+
+        h1 {
+            font-family: 'Michroma', sans-serif;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+
+        p {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: #ccc;
+        }
+
+        .description-container {
+            margin-top: 3rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 2rem;
+        }
+
+        .description-title {
+            font-family: 'Michroma', sans-serif;
+            font-size: 1.2rem;
+            color: #42cc5d;
+            margin-bottom: 1rem;
+            letter-spacing: 1px;
+            font-weight: 400;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .spec-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0;
+            padding: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .spec-card:hover {
+            background: rgba(255, 255, 255, 0.08);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        .spec-label {
+            font-family: 'Roboto', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #999;
+            margin-bottom: 0.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .spec-value {
+            font-family: 'Roboto', sans-serif;
+            font-size: 1.1rem;
+            color: white;
+            font-weight: 400;
+        }
+
+        /* Carousel Styles */
+        .carousel-section {
+            width: 100%;
+            height: 100vh;
+            background: var(--color-dark-bg);
+            position: relative;
+            z-index: 20; /* Above the model section if needed */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            scroll-snap-align: start;
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 95%;
+            max-width: 1600px;
+            height: 85vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden; /* Ensure it's not clickable/visible when opacity is 0 */
+            transition: opacity 0.4s ease, visibility 0.4s;
+            pointer-events: none;
+        }
+
+        .carousel-slide.active {
+            opacity: 1;
+            visibility: visible;
+            z-index: 1;
+            pointer-events: auto;
+        }
+
+        .carousel-slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .carousel-navigation {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .carousel-btn {
+            background: rgba(0, 0, 0, 0.4);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: auto;
+            z-index: 100;
+        }
+
+        .carousel-btn:hover {
+            background: rgba(66, 204, 93, 0.3);
+            border-color: #42cc5d;
+            color: #42cc5d;
+        }
+
+        .carousel-btn:active {
+            transform: scale(0.95);
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .carousel-dot {
+            width: 8px;
+            height: 8px;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            padding: 0;
+        }
+
+        .carousel-dot:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        .carousel-dot.active {
+            background: white;
+        }
+
+        .carousel-counter {
+            position: absolute;
+            bottom: 50px;
+            right: 20px;
+            color: rgba(255, 255, 255, 0.5);
+            font-family: 'Michroma', sans-serif;
+            font-size: 12px;
+            letter-spacing: 1px;
+            z-index: 10;
+            pointer-events: none;
+        }
+
+        /* Desktop Layout */
+        /* Only switch to desktop layout if we have enough width for a square model + content */
+        @media (min-width: 768px) and (min-aspect-ratio: 13/10) {
+            .page-container {
+                flex-direction: row;
+                height: auto;
+                min-height: 100vh;
+                position: relative; /* Context for sticky */
+                align-items: flex-start; /* Critical: prevents sticky item from stretching to full height */
+            }
+
+            .mobile-only {
+                display: none !important;
+            }
+
+            /* Desktop Header */
+            .desktop-header {
+                display: flex;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 64px;
+                background: var(--color-dark-bg);
+                z-index: 900;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .back-button-desktop {
+                position: absolute;
+                left: 20px;
+                font-family: 'Michroma', sans-serif;
+                font-size: 14px;
+                font-weight: 400;
+                color: #42cc5d;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                transition: all 0.3s ease;
+                cursor: pointer;
+                background: transparent;
+                border: none;
+                padding: 0;
+                text-shadow: none;
+                pointer-events: auto;
+            }
+
+            .back-button-desktop:hover {
+                text-shadow: 0 0 8px rgba(66, 204, 93, 0.5);
+            }
+
+            /* Desktop Title */
+            .desktop-title-container {
+                display: block;
+                position: fixed;
+                left: 50%;
+                top: 32px;
+                transform: translateX(-50%) translateY(-50%) scale(0.4);
+                z-index: 950;
+                pointer-events: none;
+            }
+
+            .desktop-title {
+                font-family: 'Michroma', sans-serif;
+                font-size: clamp(3rem, 8vw, 5rem);
+                color: white;
+                margin: 0;
+                font-weight: 400;
+                letter-spacing: 0.1em;
+                line-height: 1;
+                text-align: center;
+                white-space: nowrap;
+            }
+
+            /* Model Section - Left Square - Sticky */
+            .model-section {
+                position: sticky;
+                top: 0;
+                left: 0;
+                width: 100vh;
+                height: 100vh;
+                z-index: 10;
+                flex-shrink: 0; /* Prevent shrinking */
+            }
+
+            /* Info Section - Right Scrollable */
+            .info-section {
+                margin-left: 0; /* Remove margin */
+                width: calc(100% - 100vh); /* Take remaining width */
+                height: auto;
+                min-height: 100vh;
+                padding: 120px 4rem 4rem 4rem;
+                overflow-y: visible;
+            }
+
+            .specs-grid {
+                grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            }
+        }
+
+        @media (max-width: 768px), (max-aspect-ratio: 13/10) {
+            .info-section {
+                padding: 2rem 1rem;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .specs-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+        }
+    </style>
+
+    <script define:vars={{speakerConfigs}}>
+        window.serverSpeakerConfigs = speakerConfigs;
+    </script>
+
+    <script>
+        import * as THREE from 'three';
+        import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+        import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
+
+        // Get speaker data from sessionStorage
+        const speakerDataString = sessionStorage.getItem('speakerDetail');
+        if (!speakerDataString) {
+            // If no data, redirect back
+            window.location.href = '/';
+        }
+
+        let speakerData = JSON.parse(speakerDataString || '{}');
+        
+        // Try to find the latest config from the server-side loaded configs
+        // This ensures we have the latest data (like images) even if sessionStorage is stale
+        console.log('Server Configs Available:', window.serverSpeakerConfigs);
+        
+        if (speakerData.name && window.serverSpeakerConfigs) {
+            // Normalize names for comparison (trim, lowercase) to be safe
+            const targetName = speakerData.name.trim().toLowerCase();
+            const freshConfig = window.serverSpeakerConfigs.find(c => c.name.trim().toLowerCase() === targetName);
+            
+            if (freshConfig) {
+                console.log('Found fresh config for:', speakerData.name);
+                // Merge fresh config into speakerData, preferring fresh data
+                // We keep modelPath from sessionStorage if it exists, as it might be dynamic
+                const modelPath = speakerData.modelPath;
+                speakerData = { ...speakerData, ...freshConfig };
+                if (modelPath) speakerData.modelPath = modelPath;
+                
+                // Ensure speakerType is set (it might be called 'name' in config)
+                if (!speakerData.speakerType) speakerData.speakerType = freshConfig.name;
+            } else {
+                console.warn('Could not find fresh config for:', speakerData.name);
+            }
+        }
+
+        console.log('Speaker Detail Data (Final):', speakerData); // Debug log
+        if (speakerData.images) {
+            console.log('Images found:', speakerData.images);
+        } else {
+            console.log('No images found in speakerData');
+        }
+
+        // Update page content
+        const titleElement = document.getElementById('speakerTitle');
+        const titleElementDesktop = document.getElementById('speakerTitleDesktop');
+        const descElement = document.getElementById('speakerDescription');
+        
+        if (titleElement) titleElement.textContent = speakerData.speakerType || 'Speaker';
+        if (titleElementDesktop) titleElementDesktop.textContent = speakerData.speakerType || 'Speaker';
+        if (descElement) descElement.textContent = speakerData.description || 'No description available';
+
+        // Desktop back button
+        const backButtonDesktop = document.getElementById('backButtonDesktop');
+        if (backButtonDesktop) {
+            backButtonDesktop.addEventListener('click', () => {
+                window.history.back();
+            });
+        }
+
+        // Populate specs
+        const specsGrid = document.getElementById('specsGrid');
+        if (specsGrid && speakerData.specs) {
+            // Add type as first spec if available
+            if (speakerData.name && speakerData.speakerType) {
+                const typeCard = document.createElement('div');
+                typeCard.className = 'spec-card';
+                typeCard.innerHTML = `
+                    <div class="spec-label">Type</div>
+                    <div class="spec-value">${speakerData.name}</div>
+                `;
+                specsGrid.appendChild(typeCard);
+            }
+
+            // Add other specs
+            Object.entries(speakerData.specs).forEach(([key, value]) => {
+                const specCard = document.createElement('div');
+                specCard.className = 'spec-card';
+                specCard.innerHTML = `
+                    <div class="spec-label">${key}</div>
+                    <div class="spec-value">${value}</div>
+                `;
+                if (specsGrid) specsGrid.appendChild(specCard);
+            });
+        }
+
+        // Three.js setup for rotating model
+        const canvas = document.querySelector('canvas.webgl');
+        if (!canvas) throw new Error('Canvas not found');
+
+    const scene = new THREE.Scene();
+    scene.background = new THREE.Color(0x383e42); // Anthracite background to match wireframe style
+
+        const getCanvasSize = () => {
+            // Match CSS media query: min-width: 768px AND min-aspect-ratio: 13/10 (1.3)
+            const isDesktop = window.innerWidth >= 768 && (window.innerWidth / window.innerHeight) >= 1.3;
+            
+            if (isDesktop) {
+                // Desktop: Square based on viewport height
+                const size = window.innerHeight;
+                return { width: size, height: size };
+            } else {
+                // Mobile: Full width, 1/3 height
+                return { width: window.innerWidth, height: window.innerHeight * 0.3333 };
+            }
+        };
+
+        const sizes = getCanvasSize();
+
+        const camera = new THREE.PerspectiveCamera(50, sizes.width / sizes.height, 0.1, 1000);
+        camera.position.set(0, 0, 300);
+        scene.add(camera);
+
+        const renderer = new THREE.WebGLRenderer({
+            canvas: canvas,
+            antialias: true,
+        });
+        renderer.setSize(sizes.width, sizes.height);
+        renderer.shadowMap.enabled = true;
+        renderer.outputEncoding = THREE.sRGBEncoding;
+        renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+        // Handle window resize
+        window.addEventListener('resize', () => {
+            const newSizes = getCanvasSize();
+            sizes.width = newSizes.width;
+            sizes.height = newSizes.height;
+
+            camera.aspect = sizes.width / sizes.height;
+            camera.updateProjectionMatrix();
+
+            renderer.setSize(sizes.width, sizes.height);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        });
+
+        // Lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+        scene.add(ambientLight);
+
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+        directionalLight.position.set(5, 5, 5);
+        directionalLight.castShadow = true;
+        scene.add(directionalLight);
+
+        // Load the specific speaker model
+        const dracoLoader = new DRACOLoader();
+        dracoLoader.setDecoderPath('/draco/');
+
+        const gltfLoader = new GLTFLoader();
+        gltfLoader.setDRACOLoader(dracoLoader);
+
+        let model: THREE.Object3D | null = null;
+        
+        // Determine the correct model path
+        let modelPath = '/speaker.glb'; // default fallback
+        if (speakerData.modelPath) {
+            modelPath = speakerData.modelPath;
+        } else if (speakerData.speakerType === 'Subwoofer') {
+            modelPath = '/sub.glb';
+        } else if (speakerData.speakerType === 'Top') {
+            modelPath = '/speaker.glb';
+        }
+        
+        console.log('Loading model:', modelPath, 'for speaker type:', speakerData.speakerType); // Debug log
+
+        gltfLoader.load(
+            modelPath,
+            (gltf) => {
+                const loadedModel = gltf.scene;
+                
+                if (loadedModel) {
+                    // Get bounding box of the loaded model
+                    const box = new THREE.Box3().setFromObject(loadedModel);
+                    const center = box.getCenter(new THREE.Vector3());
+                    const size = box.getSize(new THREE.Vector3());
+                    
+                    // Create a group to handle centering and rotation
+                    const modelGroup = new THREE.Group();
+                    
+                    // Create wireframe representation like in the index page
+                    loadedModel.traverse((child: THREE.Object3D) => {
+                        if ((child as THREE.Mesh).isMesh && (child as THREE.Mesh).geometry) {
+                            const mesh = child as THREE.Mesh;
+                            
+                            // Clone the geometry and apply the world matrix to get proper positioning
+                            const geometry = mesh.geometry.clone();
+                            geometry.applyMatrix4(mesh.matrixWorld);
+                            
+                            // Create solid fill with anthracite background color
+                            const solidMaterial = new THREE.MeshBasicMaterial({ 
+                                color: 0x383e42, // Anthracite background color
+                                polygonOffset: true, 
+                                polygonOffsetFactor: 1, 
+                                polygonOffsetUnits: 1 
+                            });
+                            const solidMesh = new THREE.Mesh(geometry, solidMaterial);
+                            
+                            // Create green wireframe edges
+                            const edges = new THREE.EdgesGeometry(geometry, 15);
+                            const lineMaterial = new THREE.LineBasicMaterial({ color:0xffffff}); // White color
+                            const wireframe = new THREE.LineSegments(edges, lineMaterial);
+                            
+                            // Center both meshes
+                            solidMesh.position.set(-center.x, -center.y, -center.z);
+                            wireframe.position.set(-center.x, -center.y, -center.z);
+                            
+                            // Add both solid and wireframe to the group
+                            modelGroup.add(solidMesh);
+                            modelGroup.add(wireframe);
+                        }
+                    });
+                    
+                    // Scale the group to fit nicely in view
+                    const maxDim = Math.max(size.x, size.y, size.z);
+                    const scale = 150 / maxDim;
+                    modelGroup.scale.setScalar(scale);
+                    
+                    // Set the model reference to the group for rotation
+                    model = modelGroup;
+                    scene.add(modelGroup);
+                }
+            },
+            undefined,
+            (error) => {
+                console.error('Error loading model:', error);
+            }
+        );
+
+        // Animation loop
+        const clock = new THREE.Clock();
+
+        function animate() {
+            const deltaTime = clock.getDelta();
+            
+            // Rotate the model slowly
+            if (model) {
+                model.rotation.y += deltaTime * 0.5; // Rotate at 0.5 radians per second
+            }
+            
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+
+        // Carousel Logic
+        const carouselSection = document.getElementById('carouselSection');
+        const carousel = document.getElementById('imageCarousel');
+        const dotsContainer = document.getElementById('carouselDots');
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const carouselNav = document.getElementById('carouselNav');
+        const carouselCounter = document.getElementById('carouselCounter');
+        
+        // Use images from speakerData
+        // If no images are defined in the JSON, we won't show the carousel
+        console.log('Speaker Data in Detail Page:', speakerData);
+        console.log('Images in Speaker Data:', speakerData.images);
+        
+        const displayImages = speakerData.images || [];
+        console.log('Display Images:', displayImages);
+        
+        if (displayImages.length > 0 && carouselSection) {
+            carouselSection.style.display = 'flex';
+            
+            // Hide navigation if only 1 image
+            if (displayImages.length <= 1) {
+                if (carouselNav) carouselNav.style.display = 'none';
+                if (dotsContainer) dotsContainer.style.display = 'none';
+            }
+            
+            let currentSlide = 0;
+            
+            // Create single image element
+            const imgElement = document.createElement('img');
+            imgElement.style.opacity = '0';
+            imgElement.style.transition = 'opacity 0.3s ease';
+            imgElement.style.maxWidth = '100%';
+            imgElement.style.maxHeight = '100%';
+            imgElement.style.objectFit = 'contain';
+            carousel.appendChild(imgElement);
+
+            // Create dots
+            displayImages.forEach((_, index) => {
+                const dot = document.createElement('button');
+                dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
+                dot.addEventListener('click', () => goToSlide(index));
+                dotsContainer.appendChild(dot);
+            });
+            
+            function updateImage() {
+                // Fade out
+                imgElement.style.opacity = '0';
+                
+                setTimeout(() => {
+                    // Change source
+                    const src = displayImages[currentSlide];
+                    const cacheBustSrc = `${src}?v=${Date.now()}`; // Keep cache busting for now
+                    console.log(`Switching to slide ${currentSlide}: ${cacheBustSrc}`);
+                    imgElement.src = cacheBustSrc;
+                    
+                    // Update dots
+                    const dots = document.querySelectorAll('.carousel-dot');
+                    dots.forEach((dot, index) => {
+                        if (index === currentSlide) dot.classList.add('active');
+                        else dot.classList.remove('active');
+                    });
+
+                    // Update counter
+                    if (carouselCounter) {
+                        carouselCounter.textContent = `${currentSlide + 1} / ${displayImages.length}`;
+                    }
+
+                    // Fade in after image loads (or small delay)
+                    imgElement.onload = () => {
+                        imgElement.style.opacity = '1';
+                    };
+                    // Fallback if cached/fast
+                    setTimeout(() => {
+                        imgElement.style.opacity = '1';
+                    }, 50);
+                }, 300); // Wait for fade out
+            }
+            
+            // Initialize
+            updateImage();
+            
+            function goToSlide(index) {
+                if (index === currentSlide) return;
+                currentSlide = index;
+                updateImage();
+            }
+            
+            function nextSlide() {
+                const nextIndex = (currentSlide + 1) % displayImages.length;
+                goToSlide(nextIndex);
+            }
+            
+            function prevSlide() {
+                const prevIndex = (currentSlide - 1 + displayImages.length) % displayImages.length;
+                goToSlide(prevIndex);
+            }
+            
+            if (prevBtn) prevBtn.addEventListener('click', prevSlide);
+            if (nextBtn) nextBtn.addEventListener('click', nextSlide);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                // Only navigate if carousel is visible
+                if (carouselSection.style.display !== 'none') {
+                    if (e.key === 'ArrowLeft') prevSlide();
+                    if (e.key === 'ArrowRight') nextSlide();
+                }
+            });
+
+            // Touch/Swipe Support
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            carousel.addEventListener('touchstart', (e) => {
+                touchStartX = e.changedTouches[0].screenX;
+            }, { passive: true });
+            
+            carousel.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            }, { passive: true });
+            
+            function handleSwipe() {
+                const swipeThreshold = 50; // Minimum distance for swipe
+                if (touchEndX < touchStartX - swipeThreshold) {
+                    nextSlide(); // Swipe Left -> Next
+                }
+                if (touchEndX > touchStartX + swipeThreshold) {
+                    prevSlide(); // Swipe Right -> Prev
+                }
+            }
+        }
+
+        // Start animation
+        animate();
+    </script>
+</body>
+</html>

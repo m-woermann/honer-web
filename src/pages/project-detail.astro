@@ -1,0 +1,236 @@
+---
+import ImagePageLayout from '../components/ImagePageLayout.astro';
+
+// Dynamically import all project JSON files from config/projects directories
+const projectFiles = await Astro.glob('../config/projects/*/project.json');
+
+// Create project configs from dynamically imported project data
+const projectConfigs: Record<string, any> = {};
+projectFiles.forEach(projectFile => {
+    const project = projectFile.default;
+    projectConfigs[project.id] = project;
+});
+
+// Get project ID from URL parameters
+const url = Astro.url;
+const projectId = url.searchParams.get('id');
+
+// Find the selected project or default to first project
+let selectedProject = projectConfigs[projectId || ''] || Object.values(projectConfigs)[0];
+---
+
+<ImagePageLayout 
+    title="Project Details" 
+    pageTitle={selectedProject.name}
+    backgroundImage={selectedProject.bannerImage}
+    images={selectedProject.images}
+>
+    <div id="projectContent">
+        <div class="text-content">
+            <div class="content-section">
+                <div class="project-description" id="projectDescription">
+                    {selectedProject.content}
+                </div>
+            </div>
+
+            <div class="specs-section">
+                <h2 class="text-2xl font-michroma text-horner-green mb-6">Project Details</h2>
+                <div class="specs-grid" id="specsGrid">
+                    {Object.entries(selectedProject.specs).map(([key, value]) => (
+                        <div class="spec-item">
+                            <span class="spec-label">{key}:</span>
+                            <span class="spec-value">{value}</span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pass project data to client-side -->
+    <script type="application/json" id="project-data">{JSON.stringify(projectConfigs)}</script>
+</ImagePageLayout>
+
+<style>
+    .text-content {
+        width: 100%;
+        margin: 0;
+        padding: 0 4rem; /* More padding for full-screen feel */
+    }
+
+    .content-section {
+        margin-bottom: 3rem;
+    }
+
+    .content-section h2 {
+        font-family: 'Michroma', sans-serif;
+        color: #42cc5d;
+        margin-bottom: 1.5rem;
+    }
+
+    .content-section p {
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.7;
+        color: #e0e0e0;
+        margin-bottom: 0; /* Let grid gap handle spacing */
+    }
+
+    .project-description {
+        font-family: 'Roboto', sans-serif;
+        line-height: 1.7;
+        color: #e0e0e0;
+        margin-bottom: 3rem;
+    }
+
+    /* Target direct paragraphs inside the description */
+    .project-description :global(p) {
+        margin-bottom: 1.5rem;
+    }
+
+    .project-description :global(p:first-child) {
+        font-size: 1.1rem;
+        font-weight: 500;
+        color: #ffffff;
+    }
+
+    .specs-section {
+        margin-top: 4rem;
+        padding-top: 2rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .specs-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem; /* Increased gap */
+        margin-top: 1rem;
+    }
+    
+    /* Desktop layout */
+    @media (min-width: 1024px) {
+        .text-content {
+            display: grid;
+            grid-template-columns: 1fr 350px;
+            gap: 4rem;
+            align-items: start;
+        }
+
+        .project-description {
+            column-count: 2;
+            column-gap: 4rem;
+        }
+
+        .project-description :global(p) {
+            break-inside: avoid;
+        }
+
+        .specs-section {
+            margin-top: 0;
+            padding-top: 0;
+            border-top: none;
+            border-left: 1px solid rgba(255, 255, 255, 0.1);
+            padding-left: 2rem;
+            position: sticky;
+            top: 100px;
+        }
+
+        .specs-grid {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .spec-item {
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 1rem;
+        border-radius: 0;
+    }
+
+    .spec-label {
+        font-family: 'Michroma', sans-serif;
+        font-size: 0.9rem;
+        color: #42cc5d;
+        display: block;
+        margin-bottom: 0.5rem;
+    }
+
+    .spec-value {
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+        color: white;
+    }
+
+    @media (max-width: 768px) {
+        .specs-grid {
+            grid-template-columns: 1fr;
+        }
+        
+        .content-section h2 {
+            font-size: 1.5rem;
+        }
+        
+        .text-content {
+            padding: 0 1.5rem;
+        }
+    }
+</style>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Get project configs from the JSON script tag
+        const projectDataElement = document.getElementById('project-data');
+        if (!projectDataElement) return;
+        
+        const projectConfigs = JSON.parse(projectDataElement.textContent || '{}');
+        
+        // Get project ID from URL params
+        const urlParams = new URLSearchParams(window.location.search);
+        const projectId = urlParams.get('id');
+        
+        if (projectId && projectConfigs[projectId]) {
+            const project = projectConfigs[projectId];
+            
+            // Update page title
+            document.title = `${project.name} - Horner Audio`;
+            
+            // Update dynamic title
+            const titleElement = document.getElementById('dynamicTitle');
+            if (titleElement) {
+                titleElement.textContent = project.name;
+            }
+            
+            // Update background image
+            const imageBanner = document.getElementById('imageBanner');
+            if (imageBanner && project.bannerImage) {
+                imageBanner.style.backgroundImage = `url('${project.bannerImage}')`;
+            }
+            
+            // Update project description with full content
+            const projectDescription = document.getElementById('projectDescription');
+            if (projectDescription) {
+                // Format the content with proper line breaks
+                const formattedContent = project.content
+                    .split('\n\n')
+                    .filter(paragraph => paragraph.trim().length > 0)
+                    .map(paragraph => `<p>${paragraph.trim()}</p>`)
+                    .join('');
+                projectDescription.innerHTML = formattedContent;
+            }
+            
+            // Update specs
+            const specsGrid = document.getElementById('specsGrid');
+            if (specsGrid) {
+                specsGrid.innerHTML = '';
+                Object.entries(project.specs).forEach(([key, value]) => {
+                    const specItem = document.createElement('div');
+                    specItem.className = 'spec-item';
+                    specItem.innerHTML = `
+                        <span class="spec-label">${key}:</span>
+                        <span class="spec-value">${value}</span>
+                    `;
+                    specsGrid.appendChild(specItem);
+                });
+            }
+        }
+    });
+</script>

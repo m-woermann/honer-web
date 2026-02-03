@@ -1,0 +1,29 @@
+{
+    "id": "gm-top-212",
+    "name": "GM Top 212-90 MEH",
+    "datasheet": "/gm-top-212.pdf",
+    "description": "The Metzger Top 212-90 MEH is a highly powerful, horn-loaded point source top unit. Due to the coaxial arrangement of the 3 frequency bands and the shared horn guidance of the mid and high frequency units, an enormously consistent radiation characteristic is achieved over a wide spectrum. With a lower cutoff frequency of 90 Hz, the top unit can be coupled to almost any bass and, due to the high maximum sound pressure level, can already provide sound for larger events alone, but can also be set up as an array. The housing is made of 15mm birch plywood and is fully grooved and braced. The dimensions have been optimized to pallet size in every dimension. In addition, the housing is equipped with stacking feet on 2 sides and a total of 10x M10 flying points, ensuring full flexibility in setup and stacking. The position of the stacking feet is compatible with the entire Metzger enclosure portfolio. The Top 212-90 MEH can be converted to the Top 212-90 Limmer by changing the mid-high frequency unit.",
+    "specs": {
+        "Power": "1000W RMS", 
+        "Frequency Response": "40Hz - 20kHz",
+        "Size": "680mm × 460mm × 380mm",
+        "Drivers": "2x12\" Woofer + 1.4\" Horn",
+        "Connections": "2x Speakon NL4",
+        "Crossover": "Passive 2-Way",
+        "Dispersion": "90° × 60°",
+        "SPL": "135dB max"
+    },
+    "category": "top",
+    "type": "passive",
+    "weight": "35kg",
+    "dimensions": {
+        "width": "680mm",
+        "height": "460mm",
+        "depth": "380mm"
+    },
+    "images": [
+        "/images/gm-top-212/1.jpg",
+        "/images/gm-top-212/2.jpg",
+        "/images/gm-top-212/3.jpg"
+    ]
+}

@@ -1,0 +1,21 @@
+{
+    "id": "top",
+    "name": "Top",
+    "description": "8\" + 1\" Passive",
+    "specs": {
+        "Power": "500W RMS",
+        "Frequency Response": "90Hz - 20kHz",
+        "Size": "300mm × 500mm × 350mm",
+        "Drivers": "8\" Woofer + 1\" Tweeter",
+        "Connections": "Speakon",
+        "Crossover": "4 Pole Active Crossover"
+    },
+    "category": "monitor",
+    "type": "passive",
+    "weight": "15kg",
+    "dimensions": {
+        "width": "300mm",
+        "height": "500mm", 
+        "depth": "350mm"
+    }
+}

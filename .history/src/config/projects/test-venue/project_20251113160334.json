@@ -1,0 +1,15 @@
+{
+    "name": "Test Venue",
+    "id": "test-venue",
+    "mainImage": "/projects/test-venue/1.jpg",
+    "bannerImage": "/projects/test-venue/2.jpg",
+    "content": "Test Venue represents a new standard in professional audio installation. This dynamic space required a flexible system capable of adapting to multiple event types throughout the day.\n\nOur approach focused on creating a seamless integration between cutting-edge technology and user-friendly operation. The system features advanced DSP processing, wireless control capabilities, and modular speaker configurations.\n\nThe installation process emphasized minimal visual impact while maximizing acoustic performance. Custom mounting solutions and discrete cable management ensure the technology enhances rather than dominates the space.\n\nThe result is a venue that delivers exceptional sound quality for any event type, from intimate presentations to high-energy performances, all controlled through an intuitive interface that venue staff can master quickly.",
+    "specs": {
+        "Project Type": "Multi-Purpose Venue",
+        "Venue Capacity": "300 people",
+        "System Focus": "Flexible event support",
+        "Key Features": "Wireless control, modular design",
+        "Installation Date": "2024",
+        "Status": "Completed"
+    }
+}

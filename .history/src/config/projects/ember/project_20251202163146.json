@@ -1,0 +1,20 @@
+{
+    "name": "Ember Lounge",
+    "id": "ember",
+    "mainImage": "/projects/ember/1.jpg",
+    "bannerImage": "/projects/ember/2.jpg",
+    "images": [
+        "/projects/ember/1.jpg",
+        "/projects/ember/2.jpg",
+        "/projects/ember/3.jpg"
+    ],
+    "content": "For Ember Lounge, our goal was to craft a sound environment that complements the venue's warm, ambient aesthetic — subtle and sophisticated during the day, but capable of transforming into a lively, dynamic space at night.\n\nThe project began with a full acoustic assessment of the room's materials — from brick surfaces and wooden ceilings to soft furnishings that influence sound absorption. We selected compact full-range speakers with controlled dispersion, paired with low-profile subwoofers integrated seamlessly into the furniture and décor. Each zone (bar, lounge, and terrace) operates on an independent control path, allowing staff to adjust the mood effortlessly throughout the day.\n\nWe prioritized invisible integration, concealing wiring and hardware to preserve the venue's interior design. The amplification and DSP system provide smooth limiting, EQ, and time alignment across all zones, ensuring a coherent sound signature even at lower levels.\n\nDuring evening hours, the system can scale to accommodate DJs and small live acts, maintaining clarity without distortion. The result is an environment that feels natural and inviting — where every detail, from the lighting to the frequency balance, works together to create a memorable listening experience.",
+    "specs": {
+        "Project Type": "Lounge Audio System",
+        "Environment": "Intimate ambient space",
+        "System Focus": "Refined sound quality",
+        "Key Features": "Zone control, invisible integration",
+        "Installation Date": "2024",
+        "Status": "Completed"
+    }
+}

@@ -1,0 +1,475 @@
+---
+// Stack Builder - Secret page for creating speaker configurations
+const speakerFiles = await Astro.glob('../config/speakers/*.json');
+
+// Create speaker config map from dynamically imported configs
+const speakerConfigs: Record<string, any> = {};
+speakerFiles.forEach(speakerFile => {
+    const config = speakerFile.default;
+    speakerConfigs[config.id] = config;
+});
+
+const availableSpeakers = Object.keys(speakerConfigs);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stack Builder - Horner Audio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --color-anthracite: #383e42;
+            --color-green: #42cc5d;
+            --color-dark-bg: #1a1a1a;
+            --color-light-grey: #A8BAC6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: var(--color-dark-bg);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: grid;
+            grid-template-columns: 300px 1fr 300px;
+            height: 100vh;
+        }
+
+        .sidebar {
+            background: var(--color-anthracite);
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .sidebar h2 {
+            font-family: 'Michroma', sans-serif;
+            color: var(--color-green);
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+
+        .speaker-list {
+            margin-bottom: 2rem;
+        }
+
+        .speaker-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            padding: 0.8rem;
+            margin-bottom: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .speaker-item:hover {
+            background: rgba(66, 204, 93, 0.2);
+            border-color: var(--color-green);
+        }
+
+        .speaker-item.selected {
+            background: rgba(66, 204, 93, 0.3);
+            border-color: var(--color-green);
+        }
+
+        .controls {
+            margin-bottom: 1rem;
+        }
+
+        .control-group {
+            margin-bottom: 1rem;
+        }
+
+        .control-group label {
+            display: block;
+            margin-bottom: 0.3rem;
+            font-size: 0.9rem;
+            color: var(--color-green);
+        }
+
+        .control-group input[type="range"] {
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .control-group input[type="text"] {
+            width: 100%;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 3px;
+        }
+
+        .control-group select {
+            width: 100%;
+            padding: 0.5rem;
+            background: var(--color-anthracite);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 3px;
+        }
+
+        .btn {
+            background: var(--color-green);
+            color: var(--color-dark-bg);
+            border: none;
+            padding: 0.8rem 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            width: 100%;
+            margin-bottom: 0.5rem;
+        }
+
+        .btn:hover {
+            background: #35a049;
+        }
+
+        .btn-danger {
+            background: #cc4242;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #a03535;
+        }
+
+        .canvas-container {
+            background: var(--color-dark-bg);
+            border-left: 1px solid var(--color-anthracite);
+            border-right: 1px solid var(--color-anthracite);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .canvas {
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 20%, rgba(66, 204, 93, 0.1) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(66, 204, 93, 0.05) 0%, transparent 50%),
+                linear-gradient(180deg, var(--color-dark-bg) 0%, #0f0f0f 100%);
+        }
+
+        .speaker-visual {
+            position: absolute;
+            background: var(--color-green);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            color: var(--color-dark-bg);
+            font-weight: 600;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .speaker-visual:hover {
+            border-color: white;
+            box-shadow: 0 0 10px rgba(66, 204, 93, 0.5);
+        }
+
+        .speaker-visual.selected {
+            border-color: white;
+            box-shadow: 0 0 15px rgba(66, 204, 93, 0.8);
+        }
+
+        .export-area {
+            background: var(--color-anthracite);
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .export-textarea {
+            width: 100%;
+            height: 300px;
+            background: var(--color-dark-bg);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            padding: 1rem;
+            font-family: 'Courier New', monospace;
+            font-size: 0.8rem;
+            resize: vertical;
+        }
+
+        .stack-info {
+            margin-bottom: 1rem;
+        }
+
+        .stack-info input {
+            width: 100%;
+            padding: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            border-radius: 3px;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Left Sidebar - Speaker Library & Controls -->
+        <div class="sidebar">
+            <h2>Add Speakers</h2>
+            <div class="speaker-list">
+                {availableSpeakers.map(speakerId => (
+                    <div class="speaker-item" data-speaker-id={speakerId}>
+                        {speakerConfigs[speakerId].name}
+                    </div>
+                ))}
+            </div>
+
+            <h2>Current Speaker</h2>
+            <div class="controls" id="controls">
+                <p>Select a speaker to edit</p>
+            </div>
+
+            <button class="btn btn-danger" id="deleteSpeaker">Delete Selected</button>
+            <button class="btn" id="clearAll">Clear All</button>
+        </div>
+
+        <!-- Center - Canvas -->
+        <div class="canvas-container">
+            <div class="canvas" id="canvas">
+                <!-- Speakers will be positioned here -->
+            </div>
+        </div>
+
+        <!-- Right Sidebar - Export -->
+        <div class="sidebar export-area">
+            <h2>Export Configuration</h2>
+            <div class="stack-info">
+                <input type="text" id="stackName" placeholder="Stack Name (e.g., GM Custom)" value="Custom Stack">
+                <input type="text" id="stackDescription" placeholder="Description" value="Custom speaker configuration">
+                <input type="number" id="stackSpacing" placeholder="Spacing" value="3000">
+            </div>
+            <button class="btn" id="exportStack">Generate Export</button>
+            <textarea class="export-textarea" id="exportText" placeholder="Export configuration will appear here..."></textarea>
+            <button class="btn" id="copyExport">Copy to Clipboard</button>
+        </div>
+    </div>
+
+    <script>
+        // Available speakers data
+        const speakerConfigs = {JSON.stringify(speakerConfigs)};
+        
+        // Stack state
+        let currentStack = [];
+        let selectedSpeaker = null;
+        let speakerCounter = 0;
+
+        // DOM elements
+        const canvas = document.getElementById('canvas');
+        const controls = document.getElementById('controls');
+        const exportText = document.getElementById('exportText');
+
+        // Add speaker to stack
+        document.querySelectorAll('.speaker-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const speakerId = item.dataset.speakerId;
+                addSpeaker(speakerId);
+            });
+        });
+
+        function addSpeaker(speakerId) {
+            const speakerData = {
+                id: `speaker_${speakerCounter++}`,
+                model: speakerId,
+                x: 0,
+                y: 0,
+                z: 0,
+                rotationY: 0,
+                onGround: true
+            };
+
+            currentStack.push(speakerData);
+            renderSpeaker(speakerData);
+            updateExport();
+        }
+
+        function renderSpeaker(speakerData) {
+            const speakerConfig = speakerConfigs[speakerData.model];
+            const visual = document.createElement('div');
+            visual.className = 'speaker-visual';
+            visual.dataset.speakerId = speakerData.id;
+            
+            // Base size for visualization (not to scale)
+            const baseWidth = speakerConfig.category === 'subwoofer' ? 80 : 60;
+            const baseHeight = speakerConfig.category === 'subwoofer' ? 60 : 40;
+            
+            visual.style.width = baseWidth + 'px';
+            visual.style.height = baseHeight + 'px';
+            visual.style.left = (canvas.offsetWidth / 2 + speakerData.x / 5) + 'px';
+            visual.style.top = (canvas.offsetHeight / 2 - speakerData.z / 5 - speakerData.y / 10) + 'px';
+            visual.textContent = speakerConfig.name.substring(0, 8);
+            
+            visual.addEventListener('click', () => selectSpeaker(speakerData.id));
+            
+            canvas.appendChild(visual);
+        }
+
+        function selectSpeaker(speakerId) {
+            selectedSpeaker = currentStack.find(s => s.id === speakerId);
+            
+            // Update visual selection
+            document.querySelectorAll('.speaker-visual').forEach(v => v.classList.remove('selected'));
+            document.querySelector(`[data-speaker-id="${speakerId}"]`).classList.add('selected');
+            
+            renderControls();
+        }
+
+        function renderControls() {
+            if (!selectedSpeaker) {
+                controls.innerHTML = '<p>Select a speaker to edit</p>';
+                return;
+            }
+
+            const speakerConfig = speakerConfigs[selectedSpeaker.model];
+            
+            controls.innerHTML = `
+                <div class="control-group">
+                    <label>Speaker: ${speakerConfig.name}</label>
+                </div>
+                <div class="control-group">
+                    <label>X Position: <span id="xValue">${selectedSpeaker.x}</span></label>
+                    <input type="range" id="xSlider" min="-2000" max="2000" value="${selectedSpeaker.x}" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Y Position: <span id="yValue">${selectedSpeaker.y}</span></label>
+                    <input type="range" id="ySlider" min="0" max="2000" value="${selectedSpeaker.y}" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Z Position: <span id="zValue">${selectedSpeaker.z}</span></label>
+                    <input type="range" id="zSlider" min="-1000" max="1000" value="${selectedSpeaker.z}" step="50">
+                </div>
+                <div class="control-group">
+                    <label>Rotation Y: <span id="rotValue">${selectedSpeaker.rotationY.toFixed(2)}</span></label>
+                    <input type="range" id="rotSlider" min="0" max="${Math.PI * 2}" value="${selectedSpeaker.rotationY}" step="0.1">
+                </div>
+                <div class="control-group">
+                    <label>On Ground</label>
+                    <select id="groundSelect">
+                        <option value="true" ${selectedSpeaker.onGround ? 'selected' : ''}>Yes</option>
+                        <option value="false" ${!selectedSpeaker.onGround ? 'selected' : ''}>No</option>
+                    </select>
+                </div>
+            `;
+
+            // Add event listeners
+            document.getElementById('xSlider').addEventListener('input', updatePosition);
+            document.getElementById('ySlider').addEventListener('input', updatePosition);
+            document.getElementById('zSlider').addEventListener('input', updatePosition);
+            document.getElementById('rotSlider').addEventListener('input', updatePosition);
+            document.getElementById('groundSelect').addEventListener('change', updatePosition);
+        }
+
+        function updatePosition() {
+            if (!selectedSpeaker) return;
+
+            selectedSpeaker.x = parseInt(document.getElementById('xSlider').value);
+            selectedSpeaker.y = parseInt(document.getElementById('ySlider').value);
+            selectedSpeaker.z = parseInt(document.getElementById('zSlider').value);
+            selectedSpeaker.rotationY = parseFloat(document.getElementById('rotSlider').value);
+            selectedSpeaker.onGround = document.getElementById('groundSelect').value === 'true';
+
+            // Update value displays
+            document.getElementById('xValue').textContent = selectedSpeaker.x;
+            document.getElementById('yValue').textContent = selectedSpeaker.y;
+            document.getElementById('zValue').textContent = selectedSpeaker.z;
+            document.getElementById('rotValue').textContent = selectedSpeaker.rotationY.toFixed(2);
+
+            // Update visual position
+            const visual = document.querySelector(`[data-speaker-id="${selectedSpeaker.id}"]`);
+            visual.style.left = (canvas.offsetWidth / 2 + selectedSpeaker.x / 5) + 'px';
+            visual.style.top = (canvas.offsetHeight / 2 - selectedSpeaker.z / 5 - selectedSpeaker.y / 10) + 'px';
+            
+            updateExport();
+        }
+
+        function updateExport() {
+            const stackName = document.getElementById('stackName').value || 'Custom Stack';
+            const stackDescription = document.getElementById('stackDescription').value || 'Custom speaker configuration';
+            const stackSpacing = parseInt(document.getElementById('stackSpacing').value) || 3000;
+
+            const exportData = {
+                name: stackName,
+                description: stackDescription,
+                spacing: stackSpacing,
+                speakers: currentStack.map(speaker => ({
+                    model: speaker.model,
+                    x: speaker.x,
+                    y: speaker.y,
+                    z: speaker.z,
+                    rotationY: speaker.rotationY,
+                    onGround: speaker.onGround
+                }))
+            };
+
+            exportText.value = JSON.stringify(exportData, null, 4);
+        }
+
+        // Delete selected speaker
+        document.getElementById('deleteSpeaker').addEventListener('click', () => {
+            if (!selectedSpeaker) return;
+            
+            const index = currentStack.findIndex(s => s.id === selectedSpeaker.id);
+            if (index > -1) {
+                currentStack.splice(index, 1);
+                document.querySelector(`[data-speaker-id="${selectedSpeaker.id}"]`).remove();
+                selectedSpeaker = null;
+                renderControls();
+                updateExport();
+            }
+        });
+
+        // Clear all speakers
+        document.getElementById('clearAll').addEventListener('click', () => {
+            currentStack = [];
+            selectedSpeaker = null;
+            canvas.innerHTML = '';
+            renderControls();
+            updateExport();
+        });
+
+        // Export stack
+        document.getElementById('exportStack').addEventListener('click', updateExport);
+
+        // Copy to clipboard
+        document.getElementById('copyExport').addEventListener('click', () => {
+            exportText.select();
+            document.execCommand('copy');
+            
+            const btn = document.getElementById('copyExport');
+            const originalText = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => {
+                btn.textContent = originalText;
+            }, 1000);
+        });
+
+        // Update export fields
+        document.getElementById('stackName').addEventListener('input', updateExport);
+        document.getElementById('stackDescription').addEventListener('input', updateExport);
+        document.getElementById('stackSpacing').addEventListener('input', updateExport);
+
+        // Initial render
+        updateExport();
+    </script>
+</body>
+</html>

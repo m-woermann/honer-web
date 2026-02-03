@@ -1,0 +1,449 @@
+---
+// ImagePageLayout.astro - Reusable page layout with expandable image banner
+export interface Props {
+  title: string;
+  pageTitle: string;
+  description?: string;
+  backgroundImage?: string;
+  images?: string[]; // Array of images for navigation
+}
+
+const { title, pageTitle, description, backgroundImage, images } = Astro.props;
+const imageArray = images || (backgroundImage ? [backgroundImage] : []);
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} - Horner Audio</title>
+    <script is:inline define:vars={{ images: imageArray }}>
+        window.imageData = images;
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        .title-animation {
+            position: fixed;
+            left: 50%;
+            top: 32px; /* Static position at banner height */
+            transform: translateX(-50%) translateY(-50%); /* Remove the scale */
+            z-index: 950;
+            text-transform: uppercase; /* Always full caps */
+            font-family: 'Michroma', sans-serif; /* Use Michroma font */
+            font-size: clamp(1.2rem, 3vw, 2rem); /* Smaller size to fit nicely in banner */
+            color: white;
+            margin: 0;
+            font-weight: normal;
+            letter-spacing: 0.1em; /* tracking-wider */
+            line-height: 1; /* leading-none */
+            text-align: center;
+            white-space: nowrap;
+            /* Remove transition - no animation needed */
+        }
+
+        .carousel-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #1a1a1a;
+        }
+
+        .carousel {
+            position: relative;
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .carousel-slide img {
+            max-width: 95%;
+            max-height: 95%;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            object-position: center center;
+            display: block;
+            margin: auto;
+        }
+
+        .carousel-navigation {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        .carousel-btn {
+            background: rgba(0, 0, 0, 0.8);
+            border: none;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(6px);
+            pointer-events: auto;
+        }
+
+        .carousel-btn:hover:not(:disabled) {
+            background: rgba(0, 0, 0, 0.95);
+            transform: scale(1.1);
+            color: #42cc5d;
+        }
+
+        .carousel-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+        }
+
+        .carousel-dots {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 8px;
+            z-index: 100;
+        }
+
+        .carousel-dot {
+            width: 40px;
+            height: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .carousel-dot.active {
+            background: #42cc5d;
+        }
+
+        .carousel-dot:hover {
+            background: rgba(255, 255, 255, 0.6);
+        }
+
+        /* Additional styles for body and layout */
+        body {
+            font-family: 'Roboto', sans-serif;
+            background: #1a1a1a;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+        }
+
+        .top-banner {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 64px;
+            background: #383e42;
+            z-index: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .nav-buttons-container {
+            position: absolute;
+            left: 20px;
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-button {
+            font-family: 'Michroma', sans-serif;
+            font-size: 14px;
+            font-weight: 400;
+            color: #42cc5d;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            background: transparent;
+            border: none;
+            padding: 0;
+            text-shadow: none;
+            text-decoration: none;
+        }
+
+        .nav-button:hover {
+            color: #42cc5d;
+            text-shadow: 0 0 8px rgba(66, 204, 93, 0.5);
+        }
+
+        .page-content {
+            padding-top: 64px;
+        }
+
+        .content-area {
+            background: #1a1a1a;
+            min-height: 60vh;
+            position: relative;
+            z-index: 10;
+            margin-top: -20px;
+        }
+
+        .content-container {
+            width: 100%;
+            margin: 0 auto;
+            padding: 40px 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Static top banner with fixed height -->
+    <div class="top-banner">
+        <div class="nav-buttons-container">
+            <button id="backButton" class="nav-button">BACK</button>
+            <a href="/" class="nav-button">HOME</a>
+        </div>
+    </div>
+
+    <div class="page-content">
+        <!-- Image Carousel -->
+        <div class="carousel-container">
+            <div class="carousel" id="imageCarousel">
+                {imageArray.map((image, index) => (
+                    <div class="carousel-slide" data-index={index} style={index === 0 ? 'display: block;' : 'display: none;'}>
+                        <img src={image} alt={`Image ${index + 1}`} />
+                    </div>
+                ))}
+            </div>
+            
+            {imageArray.length > 1 && (
+                <div class="carousel-navigation">
+                    <button class="carousel-btn carousel-prev" id="prevBtn" aria-label="Previous image">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M15 18l-6-6 6-6"/>
+                        </svg>
+                    </button>
+                    <button class="carousel-btn carousel-next" id="nextBtn" aria-label="Next image">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 18l6-6-6-6"/>
+                        </svg>
+                    </button>
+                </div>
+            )}
+            
+            {imageArray.length > 1 && (
+                <div class="carousel-dots">
+                    {imageArray.map((_, index) => (
+                        <button class="carousel-dot" data-index={index} class={index === 0 ? 'active' : ''}></button>
+                    ))}
+                </div>
+            )}
+        </div>
+        
+        <div class="title-animation" id="titleContainer">
+            <h1 class="dynamic-title" id="dynamicTitle">{pageTitle}</h1>
+        </div>
+
+        <!-- Content area -->
+        <div class="content-area">
+            <div class="content-container">
+                <slot />
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        let totalSlides = 0;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const carousel = document.getElementById('imageCarousel');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const dots = document.querySelectorAll('.carousel-dot');
+            const slides = document.querySelectorAll('.carousel-slide');
+            const backButton = document.getElementById('backButton');
+
+            totalSlides = slides.length;
+
+            // Back button functionality
+            if (backButton) {
+                backButton.addEventListener('mouseenter', () => {
+                    backButton.style.textShadow = '0 0 8px rgba(66, 204, 93, 0.5)';
+                });
+
+                backButton.addEventListener('mouseleave', () => {
+                    backButton.style.textShadow = 'none';
+                });
+
+                backButton.addEventListener('click', () => {
+                    window.history.back();
+                });
+            }
+
+            // Navigation buttons
+            if (prevBtn) {
+                prevBtn.addEventListener('click', () => {
+                    goToSlide(currentSlide - 1);
+                });
+            }
+
+            if (nextBtn) {
+                nextBtn.addEventListener('click', () => {
+                    goToSlide(currentSlide + 1);
+                });
+            }
+
+            // Dot navigation
+            dots.forEach((dot, index) => {
+                dot.addEventListener('click', () => {
+                    goToSlide(index);
+                });
+            });
+
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'ArrowLeft') {
+                    goToSlide(currentSlide - 1);
+                } else if (e.key === 'ArrowRight') {
+                    goToSlide(currentSlide + 1);
+                }
+            });
+
+            function goToSlide(slideIndex) {
+                if (slideIndex < 0 || slideIndex >= totalSlides) return;
+
+                // Hide current slide
+                if (slides[currentSlide]) {
+                    slides[currentSlide].style.display = 'none';
+                }
+
+                // Update current slide index
+                currentSlide = slideIndex;
+
+                // Show new slide
+                if (slides[currentSlide]) {
+                    slides[currentSlide].style.display = 'block';
+                }
+
+                // Update dots
+                dots.forEach((dot, index) => {
+                    if (index === currentSlide) {
+                        dot.classList.add('active');
+                    } else {
+                        dot.classList.remove('active');
+                    }
+                });
+
+                // Update button states
+                updateButtons();
+            }
+
+            function updateButtons() {
+                if (prevBtn) {
+                    prevBtn.disabled = currentSlide <= 0;
+                }
+                if (nextBtn) {
+                    nextBtn.disabled = currentSlide >= totalSlides - 1;
+                }
+            }
+
+            // Initialize
+            updateButtons();
+
+            // Wait for images to load, then position content correctly
+            function initializeScrollPosition() {
+                const contentArea = document.querySelector('.content-area');
+                const carousel = document.querySelector('.carousel-container');
+                
+                if (contentArea && carousel) {
+                    // Calculate the exact position where content should start
+                    // This accounts for fixed carousel height
+                    const carouselHeight = carousel.offsetHeight;
+                    const scrollTarget = carouselHeight;
+                    
+                    // Immediately scroll to content area start
+                    window.scrollTo(0, scrollTarget);
+
+                    // After a brief pause, do nudge animation with easing
+                    setTimeout(() => {
+                        const currentScroll = window.scrollY;
+                        const nudgeAmount = 40; // Reduced from 80px
+                        
+                        // Custom eased scroll function
+                        function easeInOut(t) {
+                            return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+                        }
+                        
+                        function animateScroll(startPos, endPos, duration, callback) {
+                            const startTime = performance.now();
+                            
+                            function scroll(currentTime) {
+                                const elapsed = currentTime - startTime;
+                                const progress = Math.min(elapsed / duration, 1);
+                                const easedProgress = easeInOut(progress);
+                                
+                                const currentPos = startPos + (endPos - startPos) * easedProgress;
+                                window.scrollTo(0, currentPos);
+                                
+                                if (progress < 1) {
+                                    requestAnimationFrame(scroll);
+                                } else if (callback) {
+                                    callback();
+                                }
+                            }
+                            
+                            requestAnimationFrame(scroll);
+                        }
+                        
+                        // Nudge up with easing - reduced duration from 800ms to 400ms
+                        animateScroll(currentScroll, currentScroll - nudgeAmount, 400, () => {
+                            // Then settle back to original position with easing - reduced duration from 800ms to 400ms
+                            setTimeout(() => {
+                                animateScroll(currentScroll - nudgeAmount, currentScroll, 400);
+                            }, 200); // Reduced pause from 400ms to 200ms
+                        });
+                    }, 800);
+                }
+            }
+
+            // Wait for first image to load before positioning
+            const firstImage = slides[0]?.querySelector('img');
+            if (firstImage) {
+                if (firstImage.complete) {
+                    initializeScrollPosition();
+                } else {
+                    firstImage.addEventListener('load', initializeScrollPosition);
+                }
+            } else {
+                // Fallback if no images
+                setTimeout(initializeScrollPosition, 100);
+            }
+        });
+    </script>
+</body>
+</html>

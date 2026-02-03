@@ -1,0 +1,157 @@
+---
+// contact.astro - Contact page with Tailwind CSS
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact - Horner Audio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body class="font-roboto bg-dark-bg text-white min-h-screen overflow-x-hidden m-0 p-0">
+    <!-- Static top banner -->
+    <div class="fixed top-0 left-0 w-full h-15 bg-anthracite z-[900] flex items-center justify-center">
+        <button class="absolute left-5 bg-black/70 text-white border border-white/30 px-5 py-3 font-michroma text-sm font-normal tracking-wider uppercase transition-all duration-300 hover:bg-black/90 hover:border-white/50" onclick="window.history.back()">BACK</button>
+    </div>
+
+    <div class="pt-15">
+        <!-- Large grey section that scrolls -->
+        <div class="h-18vh bg-anthracite flex items-center justify-center relative">
+        </div>
+        <div class="title-container fixed left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50">
+            <h1 class="font-michroma text-4xl sm:text-6xl md:text-8xl lg:text-9xl text-white text-center m-0 font-normal tracking-wider leading-tight transition-transform duration-300" id="dynamicTitle">CONTACT</h1>
+        </div>
+
+        <!-- Contact info section -->
+        <div class="py-0 px-6 md:px-12 pb-12 bg-dark-bg min-h-screen mt-0">
+            <p id="contactDescription" class="font-roboto text-lg md:text-xl lg:text-2xl leading-relaxed mb-12 text-gray-300 mt-12">Get in touch with Horner Audio for professional audio solutions.</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 max-w-4xl mx-auto">
+                <div class="space-y-6 md:space-y-8">
+                    <div class="border-b border-gray-700 pb-4">
+                        <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">MOBILE</div>
+                        <div class="font-roboto text-xl md:text-2xl text-white">
+                            <a href="tel:+4917614678147" class="hover:text-horner-green transition-colors duration-300">0176 14678147</a>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-gray-700 pb-4">
+                        <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">WHATSAPP</div>
+                        <div class="font-roboto text-xl md:text-2xl text-white">
+                            <a href="https://wa.me/4917614678147" class="hover:text-horner-green transition-colors duration-300">+49 176 14678147</a>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-gray-700 pb-4">
+                        <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">EMAIL</div>
+                        <div class="font-roboto text-xl md:text-2xl text-white">
+                            <a href="mailto:carlo@horner-audio.com" class="hover:text-horner-green transition-colors duration-300">carlo@horner-audio.com</a>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-gray-700 pb-4">
+                        <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">LINKEDIN</div>
+                        <div class="font-roboto text-xl md:text-2xl text-white">
+                            <a href="https://www.linkedin.com/company/horner-audio" class="hover:text-horner-green transition-colors duration-300">horner-audio</a>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-gray-700 pb-4">
+                        <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">VAT ID</div>
+                        <div class="font-roboto text-xl md:text-2xl text-white">DE311453522</div>
+                    </div>
+                </div>
+
+                <div class="space-y-6 md:space-y-8">
+                    <div class="border-b border-gray-700 pb-4">
+                        <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">ADDRESS</div>
+                        <div class="font-roboto text-xl md:text-2xl text-white leading-relaxed">
+                            Lübecker Str. 64<br>
+                            22926 Ahrensburg<br>
+                            Germany
+                        </div>
+                    </div>
+
+                    <div class="border-b border-gray-700 pb-4">
+                        <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">BUSINESS HOURS</div>
+                        <div class="font-roboto text-xl md:text-2xl text-white leading-relaxed">
+                            Monday - Friday: 9:00 - 18:00<br>
+                            Saturday: 10:00 - 16:00<br>
+                            Sunday: By appointment
+                        </div>
+                    </div>
+
+                    <div class="border-b border-gray-700 pb-4">
+                        <div class="font-michroma text-sm md:text-base text-horner-green mb-2 tracking-wider uppercase">SPECIALTIES</div>
+                        <div class="font-roboto text-xl md:text-2xl text-white leading-relaxed">
+                            Professional Audio Mixing<br>
+                            Mastering Services<br>
+                            Audio Production<br>
+                            Consultation
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Sticky header animation script
+        let ticking = false;
+        
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+        
+        function updateTitle() {
+            const titleContainer = document.querySelector('.title-container');
+            const greySection = document.querySelector('.h-18vh');
+            
+            if (!titleContainer || !greySection) return;
+            
+            const scrolled = window.scrollY;
+            const greyHeight = greySection.offsetHeight;
+            const startTransition = greyHeight * 0.1;
+            const endTransition = greyHeight * 1.2;
+            
+            let progress = 0;
+            if (scrolled <= startTransition) {
+                progress = 0;
+            } else if (scrolled >= endTransition) {
+                progress = 1;
+            } else {
+                progress = (scrolled - startTransition) / (endTransition - startTransition);
+                progress = easeOutCubic(progress);
+            }
+            
+            // Scale from 1 to 0.375
+            const scale = 1 - (progress * 0.625);
+            
+            // Move from center of grey section to header position
+            const viewportHeight = window.innerHeight;
+            const greyCenter = greyHeight / 2 + 60; // 60px offset for banner
+            const endTop = 30 + 60; // Center of banner (30px) + banner height (60px)
+            const currentTop = greyCenter - (progress * (greyCenter - endTop));
+            
+            titleContainer.style.transform = `translateX(-50%) translateY(-50%) scale(${scale})`;
+            titleContainer.style.top = `${currentTop}px`;
+            
+            ticking = false;
+        }
+        
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateTitle);
+                ticking = true;
+            }
+        }
+        
+        window.addEventListener('scroll', requestTick, { passive: true });
+        window.addEventListener('load', updateTitle);
+    </script>
+</body>
+</html>

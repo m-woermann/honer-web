@@ -1,9 +1,0 @@
-{
-  "extends": "astro/tsconfigs/strict",
-  "compilerOptions": {
-    "moduleResolution": "node",
-    "allowJs": true,
-    "checkJs": true,
-    "types": ["three"]
-  }
-}

@@ -1,0 +1,12 @@
+{
+    "projects": [
+        {
+            "id": "atrium",
+            "featured": true
+        },
+        {
+            "id": "studio", 
+            "featured": true
+        }
+    ]
+}

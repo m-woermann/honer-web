@@ -1,0 +1,19 @@
+{
+    "name": "Club Nova",
+    "id": "club-nova",
+    "mainImage": "/projects/club-nova/1.jpg",
+    "bannerImage": "/projects/club-nova/2.jpg",
+    "images": [
+        "/projects/club-nova/1.jpg",
+        "/projects/club-nova/2.jpg"
+    ],
+    "content": "Club Nova wanted a sound system that could match its reputation as a centerpiece of the city's nightlife — powerful, precise, and capable of handling the energy of world-class DJs. We approached the project with a focus on acoustic performance, reliability, and atmosphere.\n\nThe system design revolves around dual 18-inch subwoofers for deep, tight low-end response, complemented by mid-high cabinets flown strategically to ensure even coverage across the dancefloor and bar zones. Each component was tuned through detailed measurement-based optimization, using room EQ and phase alignment to minimize reflections and dead zones.\n\nLighting and sound were integrated into a single control environment, allowing the venue staff to instantly switch between DJ performances, private events, and ambient lounge modes. The result is a club soundscape that's immersive but not overwhelming, with clean transients, strong definition in the vocal range, and a rich sense of depth.\n\nEvery aspect — from amplifier configuration to speaker positioning — was designed with long-term consistency in mind. Club Nova now delivers a sonic experience that's both physically powerful and acoustically refined, creating a dancefloor that feels alive even before the first track drops.",
+    "specs": {
+        "Project Type": "Nightclub Audio System",
+        "Venue Capacity": "400 people",
+        "System Focus": "High-impact dancefloor",
+        "Key Features": "Dual 18\" subwoofers, flown mid-highs",
+        "Installation Date": "2024",
+        "Status": "Completed"
+    }
+}

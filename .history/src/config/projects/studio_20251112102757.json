@@ -1,0 +1,23 @@
+{
+    "name": "Studio Complex",
+    "description": "Professional recording studio with precision monitoring",
+    "specs": {
+        "Location": "Los Angeles, USA",
+        "Venue Type": "Recording Studio",
+        "System": "Near-field Monitors + Subwoofers"
+    },
+    "category": "studio",
+    "type": "installed", 
+    "images": [
+        "/projects/studio-main.jpg",
+        "/projects/studio-detail.jpg",
+        "/projects/studio-mixing.jpg"
+    ],
+    "mainImage": "/projects/studio-main.jpg",
+    "content": {
+        "overview": "A cutting-edge recording facility designed for professional music production. The studio required absolute precision in monitoring to ensure accurate sound reproduction across all genres.",
+        "challenge": "Creating an acoustically perfect environment while providing flexible monitoring options for different recording scenarios and client preferences.",
+        "solution": "We implemented a multi-zone monitoring system with both near-field and far-field options, allowing engineers to reference their mixes on different speaker configurations.",
+        "results": "The studio now provides industry-leading monitoring accuracy and has become a preferred destination for top-tier artists and producers."
+    }
+}

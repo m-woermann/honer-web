@@ -1,0 +1,23 @@
+{
+    "name": "The Atrium",
+    "description": "Modern conference center with state-of-the-art audio system",
+    "specs": {
+        "Location": "Berlin, Germany",
+        "Venue Type": "Conference Center",
+        "System": "Full Range + Subwoofers"
+    },
+    "category": "commercial",
+    "type": "installed",
+    "images": [
+        "/projects/atrium-main.jpg",
+        "/projects/atrium-detail.jpg",
+        "/projects/atrium-overview.jpg"
+    ],
+    "mainImage": "/projects/atrium-main.jpg",
+    "content": {
+        "overview": "The Atrium project represents a pinnacle of modern audio engineering in commercial spaces. This state-of-the-art conference center required a sophisticated sound system capable of delivering crystal-clear audio across multiple zones while maintaining architectural elegance.",
+        "challenge": "The main challenge was to integrate high-performance audio equipment into a modern architectural space without compromising the aesthetic vision. The venue needed to support everything from intimate meetings to large-scale presentations.",
+        "solution": "Our solution involved a carefully planned array of discreet speakers positioned to provide optimal coverage while maintaining the clean lines of the modern architecture. The system includes zone control for flexible usage scenarios.",
+        "results": "The final installation delivers exceptional audio quality across all areas while remaining virtually invisible to visitors. The system has been praised for its clarity and ease of use."
+    }
+}

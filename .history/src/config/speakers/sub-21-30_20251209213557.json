@@ -1,0 +1,34 @@
+{
+    "id": "sub-21-30",
+    "name": "Metzger Sub 21-30",
+    "description": "21\" Bassreflex Subwoofer",
+    "specs": {
+        "Power": "2000W RMS / 8000W Peak",
+        "Frequency Response": "25Hz - 100Hz",
+        "Size": "620mm × 790mm × 720mm",
+        "Drivers": "21\" Neodymium Driver",
+        "Connections": "2x Speakon NL4",
+        "Impedance": "4 Ohm",
+        "SPL": "141dB Peak",
+        "Construction": "Bassreflex",
+        "Material": "18mm Birch Plywood"
+    },
+    "features": [
+        "Professional 21\" Neodymium driver for powerful bass",
+        "Bassreflex design for extended low-end response", 
+        "High power handling up to 8000W Peak",
+        "Robust birch plywood construction",
+        "Spray-coated RAL 9005 deep black finish",
+        "Reinforced steel corner protectors",
+        "4x ergonomic carrying handles",
+        "Parallel Speakon connections for flexible wiring"
+    ],
+    "category": "subwoofer",
+    "type": "passive", 
+    "weight": "65kg",
+    "dimensions": {
+        "width": "620mm",
+        "height": "790mm", 
+        "depth": "720mm"
+    }
+}

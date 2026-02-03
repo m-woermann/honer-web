@@ -1,0 +1,25 @@
+{
+    "id": "gm-sub-18/21-30",
+    "name": "GM SUB 18/21-30",
+    "description": "18/21\" Bassreflex Subwoofer",
+    "specs": {
+        "Power": "1800W AES / 4000W Program",
+        "Frequency Response": "32Hz - 120Hz (-3dB)",
+        "Size": "800mm × 600mm × 788mm",
+        "Drivers": "21\" Neodymium Driver with 4.5\" Voice Coil",
+        "Connections": "2x Neutrik NL4 Speakon",
+        "Sensitivity": "99dB/W/m (2.83V)",
+        "SPL": "131dB continuous / 137dB Peak",
+        "Construction": "Bassreflex",
+        "Material": "15mm Birch Plywood",
+        "Features": "Stacking feet, handles, M20 pole mount"
+    },
+    "category": "subwoofer",
+    "type": "passive", 
+    "weight": "62kg",
+    "dimensions": {
+        "width": "800mm",
+        "height": "600mm",
+        "depth": "788mm"
+    }
+}

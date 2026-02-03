@@ -1,0 +1,19 @@
+{
+    "name": "Subwoofer",
+    "description": "2x12\" Passive", 
+    "specs": {
+        "Power": "2000W RMS",
+        "Frequency Response": "20Hz - 150Hz",
+        "Size": "600mm × 500mm × 700mm",
+        "Drivers": "Dual 12\" Woofers",
+        "Connections": "Speakon"
+    },
+    "category": "subwoofer",
+    "type": "passive",
+    "weight": "45kg",
+    "dimensions": {
+        "width": "600mm",
+        "height": "500mm",
+        "depth": "700mm"
+    }
+}

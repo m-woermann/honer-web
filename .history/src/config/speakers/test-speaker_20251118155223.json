@@ -1,0 +1,21 @@
+{
+  "id": "test-speaker",
+  "name": "Test Speaker",
+  "description": "Dynamic test speaker to verify automatic discovery",
+  "category": "Test",
+  "type": "Full-Range",
+  "weight": "Test kg",
+  "dimensions": {
+    "width": "Test mm",
+    "height": "Test mm",
+    "depth": "Test mm"
+  },
+  "specs": {
+    "Power": "Test W RMS",
+    "Frequency Response": "Test Hz - Test kHz",
+    "Drivers": "Test Driver",
+    "Size": "Test",
+    "SPL": "Test dB",
+    "Connections": "Test Connection"
+  }
+}

@@ -1,0 +1,14 @@
+{
+    "name": "Ember Lounge",
+    "id": "ember",
+    "mainImage": "/projects/ember/1.jpg",
+    "bannerImage": "/projects/ember/2.jpg",
+    "specs": {
+        "Project Type": "Lounge Audio System",
+        "Environment": "Intimate ambient space",
+        "System Focus": "Refined sound quality",
+        "Key Features": "Zone control, invisible integration",
+        "Installation Date": "2024",
+        "Status": "Completed"
+    }
+}

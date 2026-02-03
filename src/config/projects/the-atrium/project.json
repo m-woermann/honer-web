@@ -1,0 +1,15 @@
+{
+    "name": "The Atrium",
+    "id": "the-atrium",
+    "mainImage": "/projects/the-atrium/1.jpg",
+    "bannerImage": "/projects/the-atrium/1.jpg",
+    "content": "The Atrium is a 600-capacity performance space that hosts everything from acoustic sessions and spoken-word events to full live bands and corporate showcases. Our challenge was to design a single system flexible enough to perform across a wide range of genres and event formats without compromise.\n\nWe implemented a modular line-array system paired with dedicated low-frequency reinforcement and precision-tuned fills for the balcony and side seating areas. Using digital signal processing (DSP), we created presets optimized for different room configurations — from intimate seated layouts to full standing-room concerts.\n\nAcoustic modeling software was used during planning to simulate audience absorption, speaker coverage, and delay timing. The system's time alignment and crossover points were calibrated to deliver a uniform frequency response, ensuring that every listener — from the front row to the back wall — experiences consistent clarity and tonal balance.\n\nTo support the venue's fast turnaround between shows, all signal routing and monitoring are handled via a networked digital console linked to the amplifiers, allowing quick adjustments and status checks from a central control rack. The Atrium now operates with the flexibility and sonic excellence expected of a professional touring venue, without losing its intimate charm.",
+    "specs": {
+        "Project Type": "Live Venue Installation",
+        "Venue Capacity": "600 people",
+        "System Focus": "Versatile performance space",
+        "Key Features": "Modular line-array, DSP presets",
+        "Installation Date": "2024",
+        "Status": "Completed"
+    }
+}

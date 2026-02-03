@@ -1,0 +1,276 @@
+{
+    "stacks": [
+        {
+  "id": "custom-stack",
+  "name": "Custom Stack",
+  "description": "Custom speaker configuration",
+  "spacing": 3000,
+  "speakers": [
+    {
+      "model": "gm-sub-18-21-30",
+      "x": 50,
+      "y": 0,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": true
+    },
+    {
+      "model": "gm-sub-18-21-30",
+      "x": -590,
+      "y": 0,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": true
+    },
+    {
+      "model": "gm-sub-18-21-30",
+      "x": 590,
+      "y": 0,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": true
+    },
+    {
+      "model": "gm-sub-18-21-30",
+      "x": -1170,
+      "y": 0,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": true
+    },
+    {
+      "model": "gm-sub-18-21-30",
+      "x": 1170,
+      "y": 0,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": true
+    },
+    {
+      "model": "gm-top-212",
+      "x": -990,
+      "y": 1010,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": false
+    },
+    {
+      "model": "gm-top-212",
+      "x": 810,
+      "y": 1010,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": false
+    }
+  ]
+},
+
+{
+  "id": "custom-stack2",
+  "name": "Custom Stack2",
+  "description": "Custom speaker configuration",
+  "spacing": 3000,
+  "speakers": [
+    {
+      "model": "gm-sub-18-21-30",
+      "x": -20,
+      "y": 0,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": true
+    },
+    {
+      "model": "gm-sub-18-21-30",
+      "x": 580,
+      "y": 0,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": true
+    },
+    {
+      "model": "gm-sub-18-21-30",
+      "x": -620,
+      "y": 0,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": true
+    },
+    {
+      "model": "gm-sub-18-21-30",
+      "x": 1180,
+      "y": 0,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": true
+    },
+    {
+      "model": "gm-top-212",
+      "x": -580,
+      "y": 2120,
+      "z": -500,
+      "rotationX": 0.4363323129985824,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": false
+    },
+    {
+      "model": "gm-top-212",
+      "x": 900,
+      "y": 2120,
+      "z": -500,
+      "rotationX": 0.4363323129985824,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": false
+    }
+  ]
+},
+        {
+            "name": "GM Professional",
+            "description": "4 GM Subwoofers with 2 GM Tops",
+            "spacing": 3000,
+            "speakers": [
+                {
+                    "model": "gm-sub-18-21-30",
+                    "x": -600,
+                    "y": 0,
+                    "z": 0,
+                    "rotationX": 0,
+                    "rotationY": 0,
+                    "rotationZ": 0,
+                    "onGround": true
+                },
+                {
+                    "model": "gm-sub-18-21-30",
+                    "x": -200,
+                    "y": 0,
+                    "z": 0,
+                    "rotationX": 0,
+                    "rotationY": 0,
+                    "rotationZ": 0,
+                    "onGround": true
+                },
+                {
+                    "model": "gm-sub-18-21-30",
+                    "x": 200,
+                    "y": 0,
+                    "z": 0,
+                    "rotationX": 0,
+                    "rotationY": 0,
+                    "rotationZ": 0,
+                    "onGround": true
+                },
+                {
+                    "model": "gm-sub-18-21-30",
+                    "x": 600,
+                    "y": 0,
+                    "z": 0,
+                    "rotationX": 0,
+                    "rotationY": 0,
+                    "rotationZ": 0,
+                    "onGround": true
+                },
+                {
+                    "model": "gm-top-212",
+                    "x": -200,
+                    "y": 830,
+                    "z": 0,
+                    "rotationX": 0,
+                    "rotationY": 0,
+                    "rotationZ": 0,
+                    "onGround": false
+                },
+                {
+                    "model": "gm-top-212",
+                    "x": 200,
+                    "y": 830,
+                    "z": 0,
+                    "rotationX": 0,
+                    "rotationY": 0,
+                    "rotationZ": 0,
+                    "onGround": false
+                }
+            ]
+        },
+        {
+  "id": "custom-stack",
+  "name": "Custom Stack",
+  "description": "Custom speaker configuration",
+  "spacing": 3000,
+  "speakers": [
+    {
+      "model": "gm-sub-18-21-30",
+      "x": -670,
+      "y": 0,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": true
+    },
+    {
+      "model": "gm-sub-18-21-30",
+      "x": 1330,
+      "y": 0,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": true
+    },
+    {
+      "model": "gm-top-212",
+      "x": -795,
+      "y": 800,
+      "z": 180,
+      "rotationX": 1.0821041362364843,
+      "rotationY": -0.7853981633974483,
+      "rotationZ": 0,
+      "onGround": false
+    },
+    {
+      "model": "gm-top-212",
+      "x": 1055,
+      "y": 800,
+      "z": 180,
+      "rotationX": 1.0821041362364843,
+      "rotationY": 0.7853981633974483,
+      "rotationZ": 0,
+      "onGround": false
+    },
+    {
+      "model": "gm-sub-18-21-30",
+      "x": 0,
+      "y": 0,
+      "z": 0,
+      "rotationX": 0,
+      "rotationY": 0,
+      "rotationZ": 0,
+      "onGround": true
+    }
+  ]
+}
+    ]
+}

@@ -1,0 +1,33 @@
+{
+    "id": "gm-top-206-60",
+    "name": "GM TOP 206-60",
+    "datasheet": "/gm-top-206-60.pdf",
+    "description": "The GM TOP 206-60 is a coaxial 2.5-way passive top unit featuring a closed cabinet design. It is equipped with a 6.5\" neodymium low-mid driver, a 6.5\" neodymium mid-range driver, and a 1\" neodymium high-frequency driver, offering precise sound reproduction across a wide frequency range. With a compact form factor and high efficiency, it is ideal for various sound reinforcement applications. The cabinet is constructed from 12mm birch plywood and includes feet, a handle, and M10 rigging points for versatile mounting options.",
+    "specs": {
+        "Power": "325W AES / 650W Program",
+        "Frequency Response": "100Hz - 20kHz (-3 dB)",
+        "Size": "235mm x 400mm x 190mm",
+        "Drivers": "6.5\" Low-Mid (1.5\" VC), 6.5\" Mid (2\" VC), 1\" HF (1.4\" VC)",
+        "Connections": "2x Neutrik NL4 Speakon",
+        "Sensitivity": "90 dB/W/m (2V)",
+        "SPL": "115 dB continuous / 121 dB Peak",
+        "Impedance": "4 Ohm",
+        "Dispersion": "80° x 80°",
+        "Construction": "Closed cabinet 2.5-way passive",
+        "Material": "12mm Birch Plywood",
+        "Features": "Feet, handle, M10 fly points"
+    },
+    "category": "top",
+    "type": "passive",
+    "weight": "11kg",
+    "dimensions": {
+        "width": "235mm",
+        "height": "400mm",
+        "depth": "190mm"
+    },
+    "images": [
+        "/images/gm-top-206-60/1.jpg",
+        "/images/gm-top-206-60/2.jpg",
+        "/images/gm-top-206-60/3.jpg"
+    ]
+}

@@ -1,0 +1,14 @@
+{
+    "name": "Club Nova",
+    "id": "club-nova",
+    "mainImage": "/projects/club-nova/1.jpg",
+    "bannerImage": "/projects/club-nova/2.jpg",
+    "specs": {
+        "Project Type": "Nightclub Audio System",
+        "Venue Capacity": "400 people",
+        "System Focus": "High-impact dancefloor",
+        "Key Features": "Dual 18\" subwoofers, flown mid-highs",
+        "Installation Date": "2024",
+        "Status": "Completed"
+    }
+}

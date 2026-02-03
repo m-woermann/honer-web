@@ -1,0 +1,12 @@
+{
+  "id": "test-project",
+  "name": "Test Project",
+  "mainImage": "/projects/test-project/image1.jpg",
+  "bannerImage": "/projects/test-project/image2.jpg",
+  "content": "This is a test project to verify dynamic functionality.\n\nThis project was added without any code changes to demonstrate that the system automatically discovers new projects.\n\nThe system uses Astro.glob() to dynamically import all project JSON files from the config/projects directory.",
+  "specs": {
+    "System Type": "Test System",
+    "Capacity": "Dynamic Testing",
+    "Installation": "Automated Discovery"
+  }
+}

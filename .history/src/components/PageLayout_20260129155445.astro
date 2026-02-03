@@ -1,0 +1,133 @@
+---
+// PageLayout.astro - Reusable page layout component
+export interface Props {
+  title: string;
+  pageTitle: string;
+  description?: string;
+}
+
+const { title, pageTitle, description } = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{title} - Horner Audio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <style>
+        .title-animation {
+            position: fixed;
+            left: 50%;
+            top: calc(64px + 7vh); /* Move up - closer to center of grey section */
+            transform: translateX(-50%) translateY(-50%);
+            z-index: 950;
+            transition: none; /* Remove transition for smooth manual control */
+        }
+        
+        .title-animation.in-banner {
+            top: 32px; /* Keep banner position as is */
+            transform: translateX(-50%) translateY(-50%) scale(0.35);
+        }
+    </style>
+</head>
+<body class="font-roboto bg-dark-bg text-white min-h-screen overflow-x-hidden m-0 p-0">
+    <!-- Static top banner with fixed height -->
+    <div class="fixed top-0 left-0 w-full h-16 bg-anthracite z-[900] flex items-center justify-center">
+        <div class="absolute left-5 flex gap-8">
+            <button id="backButton" class="font-michroma text-sm font-normal text-horner-green tracking-[2px] uppercase transition-all duration-300 hover:text-horner-green cursor-pointer bg-transparent border-none p-0" 
+                    style="text-shadow: none; transition: text-shadow 0.3s ease;">BACK</button>
+            <a href="/" class="font-michroma text-sm font-normal text-horner-green tracking-[2px] uppercase transition-all duration-300 hover:text-horner-green cursor-pointer bg-transparent border-none p-0 no-underline" 
+                    style="text-shadow: none; transition: text-shadow 0.3s ease;">HOME</a>
+        </div>
+    </div>
+
+    <div class="pt-16">
+        <!-- Large grey section that scrolls -->
+        <div class="h-18vh bg-anthracite flex items-center justify-center relative">
+        </div>
+        <div class="title-animation" id="titleContainer">
+            <h1 class="font-michroma text-5xl sm:text-7xl md:text-9xl lg:text-10xl text-white m-0 font-normal tracking-wider leading-none text-center whitespace-nowrap" id="dynamicTitle" style="max-height: 80px; font-size: clamp(3rem, 8vw, 5rem);">{pageTitle}</h1>
+        </div>
+
+        <!-- Content section -->
+        <div class="py-0 px-6 md:px-12 pb-12 bg-dark-bg min-h-screen mt-0">
+            {description && (
+                <p id="pageDescription" class="font-roboto text-lg md:text-xl lg:text-2xl leading-relaxed mb-12 text-gray-300 mt-12">{description}</p>
+            )}
+            
+            <slot />
+        </div>
+    </div>
+
+    <script>
+        // Sticky header animation script
+        let ticking = false;
+
+        function easeOutCubic(t) {
+            return 1 - Math.pow(1 - t, 3);
+        }
+
+        function updateTitle() {
+            const titleContainer = document.querySelector('#titleContainer') as HTMLElement;
+            const greySection = document.querySelector('.h-18vh') as HTMLElement;
+            
+            if (!titleContainer || !greySection) return;
+            
+            const scrolled = window.scrollY;
+            const greyHeight = greySection.offsetHeight;
+            
+            // Calculate progress through the grey section (0 to 1)
+            const progress = Math.min(Math.max(scrolled / greyHeight, 0), 1);
+            
+            // Apply easing to the progress for smoother animation
+            const easedProgress = easeOutCubic(progress);
+            
+            // Interpolate between start and end values
+            const startScale = 1.0;
+            const endScale = 0.4;
+            const startTop = 64 + (7 * window.innerHeight / 100); // calc(64px + 7vh)
+            const endTop = 32;
+            
+            // Calculate current scale and position
+            const currentScale = startScale + (endScale - startScale) * easedProgress;
+            const currentTop = startTop + (endTop - startTop) * easedProgress;
+            
+            // Apply the smooth transformation
+            titleContainer.style.transform = `translateX(-50%) translateY(-50%) scale(${currentScale})`;
+            titleContainer.style.top = `${currentTop}px`;
+            
+            ticking = false;
+        }
+
+        function requestTick() {
+            if (!ticking) {
+                requestAnimationFrame(updateTitle);
+                ticking = true;
+            }
+        }
+        
+        window.addEventListener('scroll', requestTick, { passive: true });
+        window.addEventListener('load', updateTitle);
+
+        // Back button event handlers
+        const backButton = document.getElementById('backButton');
+        if (backButton) {
+            backButton.addEventListener('click', () => {
+                window.history.back();
+            });
+            
+            backButton.addEventListener('mouseover', () => {
+                backButton.style.textShadow = '0 0 8px rgba(66, 204, 93, 0.5)';
+            });
+            
+            backButton.addEventListener('mouseout', () => {
+                backButton.style.textShadow = 'none';
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,194 @@
+{
+  "speakerTypes": {
+    "top": {
+      "modelPath": "/speaker.glb",
+      "name": "8\" + 1\" Passive Monitor",
+      "description": "Passive 8-inch studio monitor with 1-inch tweeter",
+      "specs": {
+        "Power": "500W RMS",
+        "Frequency Response": "90Hz - 20kHz",
+        "Drivers": "8\" Woofer + 1\" Tweeter",
+        "Connections": "Speakon",
+        "Crossover": "4 Pole Active Crossover"
+      }
+    },
+    "sub": {
+      "modelPath": "/sub.glb",
+      "name": "Dual 12\" Passive Subwoofer",
+      "description": "Dual 12-inch passive subwoofer",
+      "specs": {
+        "Power": "2000W RMS",
+        "Frequency Response": "20Hz - 150Hz",
+        "Drivers": "Dual 12\" Woofers",
+        "Connections": "Speakon"
+      }
+    }
+  },
+  "stacks": [
+    {
+      "name": "Small System",
+      "description": "4 Subwoofers with single top",
+      "spacing": 3000,
+      "speakers": [
+        {
+          "type": "sub",
+          "x": -185,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "sub",
+          "x": 185,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "top",
+          "x": 120,
+          "y": 1050,
+          "z": 0,
+          "rotationY": 0,
+          "onGround": false
+        }
+      ]
+    },
+    {
+      "name": "Medium System",
+      "description": "6 Subwoofers with dual tops",
+      "spacing": 3000,
+      "speakers": [
+        {
+          "type": "sub",
+          "x": -555,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "sub",
+          "x": -185,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "sub",
+          "x": 185,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "top",
+          "x": -490,
+          "y": 1050,
+          "z": 0,
+          "rotationY": 0,
+          "onGround": false
+        },
+        {
+          "type": "top",
+          "x": 325,
+          "y": 1050,
+          "z": 0,
+          "rotationY": 0,
+          "onGround": false
+        }
+      ]
+    },
+    {
+      "name": "Large System",
+      "description": "8 Subwoofers with dual tops",
+      "spacing": 3000,
+      "speakers": [
+        {
+          "type": "sub",
+          "x": -1295,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "sub",
+          "x": -925,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "sub",
+          "x": -555,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "sub",
+          "x": -185,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "sub",
+          "x": 185,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "sub",
+          "x": 555,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "sub",
+          "x": 925,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "sub",
+          "x": 1295,
+          "y": 0,
+          "z": 0,
+          "rotationY": 1.5707963267948966,
+          "onGround": true
+        },
+        {
+          "type": "top",
+          "x": -1295,
+          "y": 1050,
+          "z": 0,
+          "rotationY": 0,
+          "onGround": false
+        },
+        {
+          "type": "top",
+          "x": 1295,
+          "y": 1050,
+          "z": 0,
+          "rotationY": 0,
+          "onGround": false
+        }
+      ]
+    }
+  ]
+}

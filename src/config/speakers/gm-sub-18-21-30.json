@@ -1,0 +1,31 @@
+{
+    "id": "gm-sub-18-21-30",
+    "name": "GM SUB 18/21-30",
+    "datasheet": "/gm-sub-18-21-30.pdf",
+    "description": "The Metzger Sub 21-30 is a highly powerful 21'' subwoofer with a tuning frequency of 32 Hz and a lower cutoff frequency of 28 Hz. An extremely generously dimensioned bass reflex port was realized by tilting the baffle and installing the chassis with the magnet facing outwards. This enables uncompressed reproduction of the lowest part of the frequency spectrum even at the highest sound pressure levels. At the same time, the resulting pre-chamber increases efficiency towards the upper cutoff frequency of 120 Hz. The housing is made of 15mm birch plywood and is fully grooved and braced. The dimensions have been optimized to pallet size in every dimension. In addition, the housing is equipped with stacking feet on 4 sides, ensuring full flexibility in setup and stacking. The position of the stacking feet is compatible with the entire Metzger enclosure portfolio.",
+    "specs": {
+        "Power": "1800W AES / 4000W Program",
+        "Frequency Response": "32Hz - 120Hz (-3dB)",
+        "Size": "800mm × 600mm × 788mm",
+        "Drivers": "21\" Neodymium Driver with 4.5\" Voice Coil",
+        "Connections": "2x Neutrik NL4 Speakon",
+        "Sensitivity": "99dB/W/m (2.83V)",
+        "SPL": "131dB continuous / 137dB Peak",
+        "Construction": "Bassreflex",
+        "Material": "15mm Birch Plywood",
+        "Features": "Stacking feet, handles, M20 pole mount"
+    },
+    "category": "subwoofer",
+    "type": "passive", 
+    "weight": "62kg",
+    "dimensions": {
+        "width": "800mm",
+        "height": "600mm",
+        "depth": "788mm"
+    },
+    "images": [
+        "/images/gm-sub-18-21-30/1.jpg",
+        "/images/gm-sub-18-21-30/2.jpg",
+        "/images/gm-sub-18-21-30/3.jpg"
+    ]
+}

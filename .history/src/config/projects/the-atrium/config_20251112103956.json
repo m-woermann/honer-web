@@ -1,0 +1,14 @@
+{
+    "name": "The Atrium",
+    "id": "the-atrium",
+    "mainImage": "/projects/the-atrium/1.jpg",
+    "bannerImage": "/projects/the-atrium/1.jpg",
+    "specs": {
+        "Project Type": "Live Venue Installation",
+        "Venue Capacity": "600 people",
+        "System Focus": "Versatile performance space",
+        "Key Features": "Modular line-array, DSP presets",
+        "Installation Date": "2024",
+        "Status": "Completed"
+    }
+}
