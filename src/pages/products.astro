@@ -54,6 +54,7 @@ speakerFiles.forEach(speakerFile => {
 
     <!-- Pass speaker configs to client script -->
     <script is:inline define:vars={{speakerConfigsMap}}>
+      // @ts-nocheck
       window.speakerConfigsMap = speakerConfigsMap;
     </script>
 
@@ -189,7 +190,7 @@ speakerFiles.forEach(speakerFile => {
         import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
         import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader.js';
 
-        function initViewer(container, modelPath) {
+        function initViewer(container: HTMLElement, modelPath: string) {
             console.log('Initializing viewer for:', modelPath);
             
             if (!container || !modelPath) {

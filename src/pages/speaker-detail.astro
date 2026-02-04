@@ -501,7 +501,8 @@ const speakerConfigs = speakerFiles.map(file => file.default);
         }
     </style>
 
-    <script define:vars={{speakerConfigs}}>
+    <script is:inline define:vars={{speakerConfigs}}>
+        // @ts-nocheck
         window.serverSpeakerConfigs = speakerConfigs;
     </script>
 
@@ -791,7 +792,7 @@ const speakerConfigs = speakerFiles.map(file => file.default);
         const displayImages = speakerData.images || [];
         console.log('Display Images:', displayImages);
         
-        if (displayImages.length > 0 && carouselSection) {
+        if (displayImages.length > 0 && carouselSection && carousel) {
             carouselSection.style.display = 'flex';
             
             // Hide navigation if only 1 image
@@ -812,12 +813,14 @@ const speakerConfigs = speakerFiles.map(file => file.default);
             carousel.appendChild(imgElement);
 
             // Create dots
-            displayImages.forEach((_, index) => {
-                const dot = document.createElement('button');
-                dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
-                dot.addEventListener('click', () => goToSlide(index));
-                dotsContainer.appendChild(dot);
-            });
+            if (dotsContainer) {
+                displayImages.forEach((_, index) => {
+                    const dot = document.createElement('button');
+                    dot.className = `carousel-dot ${index === 0 ? 'active' : ''}`;
+                    dot.addEventListener('click', () => goToSlide(index));
+                    dotsContainer.appendChild(dot);
+                });
+            }
             
             function updateImage() {
                 // Fade out

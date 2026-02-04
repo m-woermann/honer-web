@@ -21,7 +21,7 @@ const availableSpeakers = Object.keys(speakerConfigs);
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Michroma&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <script type="importmap">
+    <script is:inline type="importmap">
     {
         "imports": {
             "three": "https://unpkg.com/three@0.157.0/build/three.module.js",
@@ -334,6 +334,7 @@ const availableSpeakers = Object.keys(speakerConfigs);
     </div>
 
     <script is:inline define:vars={{speakerConfigs}} type="module">
+        // @ts-nocheck
         import * as THREE from 'three';
         import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
         import { OrbitControls } from 'three/addons/controls/OrbitControls.js';

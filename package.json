@@ -10,9 +10,11 @@
     "astro": "astro"
   },
   "dependencies": {
+    "@astrojs/check": "^0.9.6",
     "@astrojs/tailwind": "^6.0.2",
     "astro": "^3.0.0",
-    "three": "^0.157.0"
+    "three": "^0.157.0",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@tailwindcss/typography": "^0.5.19",

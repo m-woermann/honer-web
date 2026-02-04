@@ -48,7 +48,7 @@ let selectedProject = projectConfigs[projectId || ''] || Object.values(projectCo
     </div>
 
     <!-- Pass project data to client-side -->
-    <script type="application/json" id="project-data">{JSON.stringify(projectConfigs)}</script>
+    <script is:inline type="application/json" id="project-data">{JSON.stringify(projectConfigs)}</script>
 </ImagePageLayout>
 
 <style>

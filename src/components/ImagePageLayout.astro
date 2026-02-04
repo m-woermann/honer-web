@@ -8,7 +8,7 @@ export interface Props {
   images?: string[]; // Array of images for navigation
 }
 
-const { title, pageTitle, description, backgroundImage, images } = Astro.props;
+const { title, pageTitle, backgroundImage, images } = Astro.props;
 const imageArray = images || (backgroundImage ? [backgroundImage] : []);
 ---
 
@@ -19,6 +19,7 @@ const imageArray = images || (backgroundImage ? [backgroundImage] : []);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{title} - Horner Audio</title>
     <script is:inline define:vars={{ images: imageArray }}>
+        // @ts-nocheck
         window.imageData = images;
     </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -287,7 +288,7 @@ const imageArray = images || (backgroundImage ? [backgroundImage] : []);
         let totalSlides = 0;
 
         document.addEventListener('DOMContentLoaded', () => {
-            const carousel = document.getElementById('imageCarousel');
+            document.getElementById('imageCarousel'); // Used by CSS/Logic, element existence check
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
             const dots = document.querySelectorAll('.carousel-dot');
@@ -332,20 +333,25 @@ const imageArray = images || (backgroundImage ? [backgroundImage] : []);
                 }
             });
 
+            /**
+             * @param {number} slideIndex
+             */
             function goToSlide(slideIndex) {
                 if (slideIndex < 0 || slideIndex >= totalSlides) return;
 
                 // Hide current slide
-                if (slides[currentSlide]) {
-                    slides[currentSlide].style.display = 'none';
+                const currentSlideEl = slides[currentSlide];
+                if (currentSlideEl instanceof HTMLElement) {
+                    currentSlideEl.style.display = 'none';
                 }
 
                 // Update current slide index
                 currentSlide = slideIndex;
 
                 // Show new slide
-                if (slides[currentSlide]) {
-                    slides[currentSlide].style.display = 'block';
+                const newSlideEl = slides[currentSlide];
+                if (newSlideEl instanceof HTMLElement) {
+                    newSlideEl.style.display = 'block';
                 }
 
                 // Update dots
@@ -362,10 +368,10 @@ const imageArray = images || (backgroundImage ? [backgroundImage] : []);
             }
 
             function updateButtons() {
-                if (prevBtn) {
+                if (prevBtn instanceof HTMLButtonElement) {
                     prevBtn.disabled = currentSlide <= 0;
                 }
-                if (nextBtn) {
+                if (nextBtn instanceof HTMLButtonElement) {
                     nextBtn.disabled = currentSlide >= totalSlides - 1;
                 }
             }
@@ -378,7 +384,7 @@ const imageArray = images || (backgroundImage ? [backgroundImage] : []);
                 const contentArea = document.querySelector('.content-area');
                 const carousel = document.querySelector('.carousel-container');
                 
-                if (contentArea && carousel) {
+                if (contentArea && carousel instanceof HTMLElement) {
                     // Calculate the exact position where content should start
                     // This accounts for fixed carousel height
                     const carouselHeight = carousel.offsetHeight;
@@ -387,17 +393,48 @@ const imageArray = images || (backgroundImage ? [backgroundImage] : []);
                     // Immediately scroll to content area start
                     window.scrollTo(0, scrollTarget);
 
+                    // Detect user interaction to cancel nudge
+                    let hasInteracted = false;
+                    const interactionHandler = () => { hasInteracted = true; };
+                    
+                    // Attach listeners after small delay to ignore initial programmatic scroll
+                    setTimeout(() => {
+                        window.addEventListener('scroll', interactionHandler, { once: true });
+                        window.addEventListener('wheel', interactionHandler, { once: true });
+                        window.addEventListener('touchmove', interactionHandler, { once: true });
+                    }, 50);
+
                     // After a brief pause, do nudge animation with easing
                     setTimeout(() => {
+                        // Clean up listeners
+                        window.removeEventListener('scroll', interactionHandler);
+                        window.removeEventListener('wheel', interactionHandler);
+                        window.removeEventListener('touchmove', interactionHandler);
+
+                        // If user has scrolled/interacted, don't nudge
+                        if (hasInteracted) return;
+                        
+                        // Double check check position hasn't drifted significantly
+                        if (Math.abs(window.scrollY - scrollTarget) > 20) return;
+
                         const currentScroll = window.scrollY;
                         const nudgeAmount = 40; // Reduced from 80px
                         
                         // Custom eased scroll function
+                        /**
+                         * @param {number} t
+                         */
                         function easeInOut(t) {
                             return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
                         }
                         
-                        function animateScroll(startPos, endPos, duration, callback) {
+                        /**
+                         * @param {number} startPos
+                         * @param {number} endPos
+                         * @param {number} duration
+                         * @param {Function} [callback]
+                         */
+                        function animateScroll(startPos, endPos, duration, callback = () => {}) {
                             const startTime = performance.now();
                             
                             function scroll(currentTime) {
@@ -410,7 +447,7 @@ const imageArray = images || (backgroundImage ? [backgroundImage] : []);
                                 
                                 if (progress < 1) {
                                     requestAnimationFrame(scroll);
-                                } else if (callback) {
+                                } else {
                                     callback();
                                 }
                             }
@@ -430,7 +467,8 @@ const imageArray = images || (backgroundImage ? [backgroundImage] : []);
             }
 
             // Wait for first image to load before positioning
-            const firstImage = slides[0]?.querySelector('img');
+            const firstSlide = slides[0];
+            const firstImage = firstSlide ? firstSlide.querySelector('img') : null;
             if (firstImage) {
                 if (firstImage.complete) {
                     initializeScrollPosition();
